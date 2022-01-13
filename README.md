@@ -1,3 +1,9 @@
-# Eng1
+# Eng1 Project - York Pirates! developed by SconeZone
 
-!Commitment of Test does not user LibGDX, and therefore is now redundant to this project!
+Team:
+  - Sabrina
+  - Michael
+  - Tine
+  - Yas
+  - Josh
+  - Zac
