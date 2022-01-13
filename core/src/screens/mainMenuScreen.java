@@ -1,25 +1,34 @@
 package screens;
 
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.maps.tiled.TiledMap;
+import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
+import com.badlogic.gdx.maps.tiled.TmxMapLoader;
+import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.yorkpiratesgame.io.YorkPirates;
 
 public class mainMenuScreen  implements Screen {
 
+    private static final int TITLE_HEADER_WIDTH = 500;
     private static final int EXIT_BUTTON_WIDTH = 150;
     private static final int EXIT_BUTTON_HEIGHT = 75;
     private static final int PLAY_BUTTON_WIDTH = 150;
     private static final int PLAY_BUTTON_HEIGHT = 75;
     private static final int EXIT_BUTTON_Y = 100;
     private static final int PLAY_BUTTON_Y = 200;
-    public static Texture backgroundTexture;
-    public static Sprite backgroundSprite;
+
+    TiledMap tiledMap;
+    OrthographicCamera camera;
+    TiledMapRenderer tiledMapRenderer;
 
     YorkPirates game;
 
+    Texture title;
     Texture exitButtonActive;
     Texture exitButtonInactive;
     Texture playButtonActive;
@@ -28,12 +37,17 @@ public class mainMenuScreen  implements Screen {
 
     public mainMenuScreen(YorkPirates game){
         this.game = game;
+        title = new Texture("menu/titleHeader.png");
         playButtonActive = new Texture("menu/playActive.png");
         playButtonInactive = new Texture("menu/play.png");
         exitButtonActive = new Texture("menu/exitActive.png");
         exitButtonInactive = new Texture("menu/exit.png");
-        backgroundTexture = new Texture("menu/menuBackground.png");
-        backgroundSprite = new Sprite(backgroundTexture);
+        camera = new OrthographicCamera();
+        camera.setToOrtho(false,Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
+        camera.update();
+        tiledMap = new TmxMapLoader().load("menu/menuBackground.tmx");
+        tiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap);
+
     }
 
     @Override
@@ -42,11 +56,13 @@ public class mainMenuScreen  implements Screen {
 
     @Override
     public void render(float delta) {
-
-
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         game.batch.begin();
-        backgroundSprite.draw(game.batch);
+        camera.update();
+        tiledMapRenderer.setView(camera);
+        tiledMapRenderer.render();
+
+        game.batch.draw(title, ((YorkPirates.WIDTH / 2) - (TITLE_HEADER_WIDTH / 2)), 600);
 
         int buttonCordX = (YorkPirates.WIDTH / 2) - (EXIT_BUTTON_WIDTH / 2);
         if (Gdx.input.getX() < buttonCordX + EXIT_BUTTON_WIDTH && Gdx.input.getX() > buttonCordX && YorkPirates.HEIGHT - Gdx.input.getY() < EXIT_BUTTON_Y + EXIT_BUTTON_HEIGHT && YorkPirates.HEIGHT - Gdx.input.getY() > EXIT_BUTTON_Y){
@@ -93,6 +109,5 @@ public class mainMenuScreen  implements Screen {
 
     @Override
     public void dispose() {
-
     }
 }

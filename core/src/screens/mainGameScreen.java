@@ -4,32 +4,48 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.maps.tiled.TiledMap;
+import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
+import com.badlogic.gdx.maps.tiled.TmxMapLoader;
+import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.yorkpiratesgame.io.YorkPirates;
 
 public class mainGameScreen implements Screen {
 
     public static final float SPEED = 120;
 
-    Texture img;
+    Sprite ship;
+    private static Texture img;
     float x;
     float y;
+    TiledMap tiledMap;
+    OrthographicCamera camera;
+    TiledMapRenderer tiledMapRenderer;
 
     YorkPirates game;
 
     public mainGameScreen (YorkPirates game){
         this.game = game;
+        camera = new OrthographicCamera();
+        camera.setToOrtho(false,Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
+        camera.update();
+        tiledMap = new TmxMapLoader().load("GameMap/mainMap(1).tmx");
+        tiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap);
     }
 
     @Override
     public void show() {
-        img = new Texture("ships/ship (1).png");
+        img = new Texture(Gdx.files.internal("Ships/ship (1).png"));
+        ship = new Sprite(img);
+        ship.setPosition(Gdx.graphics.getWidth()/2 - ship.getWidth()/2, Gdx.graphics.getHeight()/2 - ship.getHeight()/2);
     }
 
     @Override
     public void render(float delta) {
-        String direction = "DOWN";
+        /* String direction = "DOWN";
         if (Gdx.input.isKeyPressed(Input.Keys.UP)){
             y += SPEED * Gdx.graphics.getDeltaTime();
         }
@@ -41,12 +57,16 @@ public class mainGameScreen implements Screen {
         }
         if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)){
             x += SPEED * Gdx.graphics.getDeltaTime();
-        }
+        }*/
 
         Gdx.gl.glClearColor(1,0,0,1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         game.batch.begin();
-        game.batch.draw(img, x, y);
+        ship.draw(game.batch);
+        camera.update();
+        tiledMapRenderer.setView(camera);
+        tiledMapRenderer.render();
+
         game.batch.end();
 
     }
