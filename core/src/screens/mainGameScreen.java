@@ -34,30 +34,36 @@ public class mainGameScreen implements Screen {
         camera.update();
         tiledMap = new TmxMapLoader().load("GameMap/mainMap(1).tmx");
         tiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap);
+        x = 100;
+        y = 100;
     }
 
     @Override
     public void show() {
         img = new Texture(Gdx.files.internal("Ships/ship (1).png"));
         ship = new Sprite(img);
-        ship.setPosition(Gdx.graphics.getWidth()/2 - ship.getWidth()/2, Gdx.graphics.getHeight()/2 - ship.getHeight()/2);
+        ship.setPosition(x, y);
     }
 
     @Override
     public void render(float delta) {
-        /* String direction = "DOWN";
+        String direction = "DOWN";
         if (Gdx.input.isKeyPressed(Input.Keys.UP)){
             y += SPEED * Gdx.graphics.getDeltaTime();
+            ship.setPosition(x, y);
         }
         if (Gdx.input.isKeyPressed(Input.Keys.DOWN)){
             y -= SPEED * Gdx.graphics.getDeltaTime();
+            ship.setPosition(x, y);
         }
         if (Gdx.input.isKeyPressed(Input.Keys.LEFT)){
             x -= SPEED * Gdx.graphics.getDeltaTime();
+            ship.setPosition(x, y);
         }
         if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)){
             x += SPEED * Gdx.graphics.getDeltaTime();
-        }*/
+            ship.setPosition(x, y);
+        }
 
         Gdx.gl.glClearColor(1,0,0,1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
