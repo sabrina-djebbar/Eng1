@@ -109,5 +109,11 @@ public class mainMenuScreen  implements Screen {
 
     @Override
     public void dispose() {
+        title.dispose();
+        exitButtonActive.dispose();
+        exitButtonInactive.dispose();
+        playButtonActive.dispose();
+        playButtonInactive.dispose();
+        tiledMap.dispose();
     }
 }

@@ -17,10 +17,10 @@ public class mainGameScreen implements Screen {
 
     public static final float SPEED = 120;
 
-    Sprite ship;
     private static Texture img;
     float x;
     float y;
+    Sprite ship;
     TiledMap tiledMap;
     OrthographicCamera camera;
     TiledMapRenderer tiledMapRenderer;
@@ -99,6 +99,7 @@ public class mainGameScreen implements Screen {
 
     @Override
     public void dispose() {
-
+        tiledMap.dispose();
+        img.dispose();
     }
 }
