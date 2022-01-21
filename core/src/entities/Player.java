@@ -16,13 +16,15 @@ public class Player extends Entity {
     public int currentHealth;
     public int armourRating;
     public int weaponDamage;
-
-
+    public int gold;
+    public int score;
 
     public Player(){
         img = new Texture("Ships/ship (1).png");
         pos = new Vector2(0,0);
-
+        currentHealth = maxHealth;
+        armourRating = 1;
+        weaponDamage = 10;
     }
 
     @Override
@@ -62,11 +64,31 @@ public class Player extends Entity {
         return(pos.y);
     }
 
-    public void hit(int damage){
+    public int getCurrentHealth(){
+        return(currentHealth);
+    }
+
+    public int getScore(){
+        return(score);
+    }
+
+    public int getGold(){
+        return(gold);
+    }
+
+    public void setGold(){
 
     }
 
-    public int getCurrentHealth(){
-        return(currentHealth);
+    public void setArmourRating(){
+
+    }
+
+    public void setWeaponDamage(){
+
+    }
+
+    public void hit(int damage){
+
     }
 }
