@@ -1,85 +1,61 @@
 package screens;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.maps.tiled.TiledMap;
-import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
+import entities.Player;
 import com.yorkpiratesgame.io.YorkPirates;
 
 public class mainGameScreen implements Screen {
 
-    public static final float SPEED = 120;
+    private TiledMap tiledMap;
+    private OrthogonalTiledMapRenderer tiledMapRenderer;
+    private OrthographicCamera camera;
 
-    private static Texture img;
-    float x;
-    float y;
-    Sprite ship;
-    TiledMap tiledMap;
-    OrthographicCamera camera;
-    TiledMapRenderer tiledMapRenderer;
-
+    private Player player;
     YorkPirates game;
 
     public mainGameScreen (YorkPirates game){
         this.game = game;
-        camera = new OrthographicCamera();
-        camera.setToOrtho(false,Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
-        camera.update();
-        tiledMap = new TmxMapLoader().load("GameMap/mainMap(1).tmx");
-        tiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap);
-        x = 100;
-        y = 100;
     }
 
     @Override
     public void show() {
-        img = new Texture(Gdx.files.internal("Ships/ship (1).png"));
-        ship = new Sprite(img);
-        ship.setPosition(x, y);
+        tiledMap = new TmxMapLoader().load("GameMap/mainMap(1).tmx");
+        tiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap);
+        camera = new OrthographicCamera();
+        camera.setToOrtho(false,Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
+        player = new Player();
     }
 
     @Override
     public void render(float delta) {
-        String direction = "DOWN";
-        if (Gdx.input.isKeyPressed(Input.Keys.UP)){
-            y += SPEED * Gdx.graphics.getDeltaTime();
-            ship.setPosition(x, y);
-        }
-        if (Gdx.input.isKeyPressed(Input.Keys.DOWN)){
-            y -= SPEED * Gdx.graphics.getDeltaTime();
-            ship.setPosition(x, y);
-        }
-        if (Gdx.input.isKeyPressed(Input.Keys.LEFT)){
-            x -= SPEED * Gdx.graphics.getDeltaTime();
-            ship.setPosition(x, y);
-        }
-        if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)){
-            x += SPEED * Gdx.graphics.getDeltaTime();
-            ship.setPosition(x, y);
-        }
 
         Gdx.gl.glClearColor(1,0,0,1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        game.batch.begin();
-        ship.draw(game.batch);
         camera.update();
-        tiledMapRenderer.setView(camera);
-        tiledMapRenderer.render();
+        player.update();
 
+        tiledMapRenderer.setView(camera);
+        game.batch.begin();
+        tiledMapRenderer.render();
+        player.render(game.batch);
         game.batch.end();
+
 
     }
 
     @Override
     public void resize(int width, int height) {
-
+        camera.viewportWidth = YorkPirates.WIDTH;
+        camera.viewportHeight = YorkPirates.HEIGHT;
+        camera.update();
     }
 
     @Override
@@ -100,6 +76,6 @@ public class mainGameScreen implements Screen {
     @Override
     public void dispose() {
         tiledMap.dispose();
-        img.dispose();
+        tiledMapRenderer.dispose();
     }
 }
