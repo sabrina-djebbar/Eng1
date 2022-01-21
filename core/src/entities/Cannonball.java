@@ -1,4 +1,4 @@
-package com.yorkpiratesgame.io;
+package entities;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.graphics.Texture;
