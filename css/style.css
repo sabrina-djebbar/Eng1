@@ -1,0 +1,113 @@
+header{
+    background-color: #f5f5f5;
+    height : 10vh;
+    overflow : hidden;
+    display:inline;
+    margin:1em;
+    padding-right: 1vh;
+}
+html,body{
+    background-color : #f6f6f6;
+    margin : 0;
+    font-family:Arial, Helvetica, sans-serif;
+}
+
+.teamName{
+    display: block;
+    color:#767676;
+    font-size: 1em;
+    font-family: "Comic Sans MS", cursive, sans-serif;
+    text-decoration: none;
+
+}
+
+.title{
+    color:black;
+    font-size: 10vh;  
+    text-align :center;
+    padding:1em;
+    display:inline;
+    vertical-align: top;
+}
+/* 
+topnav styles the horizontal navigation bar
+dropdown is the styling for each individual dropdown menu
+each menu consists of a header and one or more links
+dropdown-header is the style for the header buttons of each dropdown menu
+dropdown-content is the style for each link within a dropdown menu
+*/
+.topnav{
+    padding-left:0.5em;
+    background-color:#ed1c24;
+}
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+.dropdown-header {
+    background-color: #ed1c24;
+    color: white;
+    padding: 0.5em;
+    font-size: 1em;
+    border: none;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.dropdown-header a {
+    color: white;
+    padding: 0.5em;
+    text-decoration: none;
+    display: block;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #a7a7a7;
+    color:white;
+    width: 100%;
+    overflow:auto;
+    z-index: 1;
+}
+
+.dropdown-content a {
+    color: white;
+    padding: 0.5em;
+    text-decoration: none;
+    display: block;
+}
+
+.dropdown-content a:hover {
+    background-color: #767676;
+}
+
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
+.dropdown:hover .dropdown-header {
+    background-color: #767676;
+}
+
+/*create columns for information on index.php*/
+.col-container {
+    display: table; /* Make the container element behave like a table */
+    width: 100%; /* Set full-width to expand the whole page */
+    height:71.5vh;
+    overflow:hidden;
+}
+.col {	
+    padding:3vw;
+	display: table-cell; /* Make elements inside the container behave like table cells */
+}
+h1{
+    font-size:1em;
+    text-decoration: underline;
+}
+
+col ul{
+    font-size:0.5em;
+}
+
+
