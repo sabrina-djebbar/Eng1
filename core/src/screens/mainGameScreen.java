@@ -24,8 +24,9 @@ public class mainGameScreen implements Screen {
     private TiledMap tiledMap;
     private OrthogonalTiledMapRenderer tiledMapRenderer;
     private OrthographicCamera camera;
-    private Rectangle logicCamera;
-
+    private int mapHeight;
+    private int mapWidth;
+    
     private Player player;
     YorkPirates game;
 
@@ -38,12 +39,8 @@ public class mainGameScreen implements Screen {
         tiledMap = new TmxMapLoader().load("GameMap/mainMap(1).tmx");
         tiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap);
         camera = new OrthographicCamera();
-        Iterator<String> keys = tiledMap.getProperties().getKeys();
-        while(keys.hasNext()) {
-        	  System.out.println(keys.next());
-        	}
-        System.out.print(tiledMap.getProperties().get("tileheight"));
-        System.out.print(Gdx.graphics.getHeight());
+        mapHeight = ((int) tiledMap.getProperties().get("tileheight")) * ((int) tiledMap.getProperties().get("height"));
+        mapWidth = ((int) tiledMap.getProperties().get("tilewidth")) * ((int) tiledMap.getProperties().get("width"));
         //camera.position.set(camera.viewportWidth, camera.viewportHeight, 0);
         camera.position.set(Gdx.graphics.getWidth()/2, Gdx.graphics.getHeight()/2, 0);
         //camera.setToOrtho(false,Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
@@ -57,6 +54,11 @@ public class mainGameScreen implements Screen {
 
         Gdx.gl.glClearColor(1,0,0,1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        
+        
+        if (player.getXPos() > mapWidth - player.getHeight() * 2) player.setXPos(mapWidth - player.getHeight() * 2);
+        if (player.getYPos() > mapHeight - player.getHeight() * 2) player.setYPos(mapHeight - player.getHeight() * 2);
+        
         Vector3 camPos = camera.position;
         int widthBorder = (Gdx.graphics.getWidth()/2) - player.getHeight();
         int heightBorder = (Gdx.graphics.getHeight()/2) - player.getHeight();
