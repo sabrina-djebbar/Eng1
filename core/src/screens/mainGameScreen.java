@@ -1,5 +1,6 @@
 package screens;
 
+import java.util.Iterator;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
@@ -9,14 +10,21 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
+import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.Vector3;
+
 import entities.Player;
 import com.yorkpiratesgame.io.YorkPirates;
 
 public class mainGameScreen implements Screen {
+	
+	static final int WORLD_WIDTH = 100;
+	static final int WORLD_HEIGHT = 100;
 
     private TiledMap tiledMap;
     private OrthogonalTiledMapRenderer tiledMapRenderer;
     private OrthographicCamera camera;
+    private Rectangle logicCamera;
 
     private Player player;
     YorkPirates game;
@@ -30,8 +38,18 @@ public class mainGameScreen implements Screen {
         tiledMap = new TmxMapLoader().load("GameMap/mainMap(1).tmx");
         tiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap);
         camera = new OrthographicCamera();
-        camera.setToOrtho(false,Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
+        Iterator<String> keys = tiledMap.getProperties().getKeys();
+        while(keys.hasNext()) {
+        	  System.out.println(keys.next());
+        	}
+        System.out.print(tiledMap.getProperties().get("tileheight"));
+        System.out.print(Gdx.graphics.getHeight());
+        //camera.position.set(camera.viewportWidth, camera.viewportHeight, 0);
+        camera.position.set(Gdx.graphics.getWidth()/2, Gdx.graphics.getHeight()/2, 0);
+        //camera.setToOrtho(false,Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
         player = new Player();
+        player.setXPos(Gdx.graphics.getWidth()/2);
+        player.setYPos(Gdx.graphics.getHeight()/2);
     }
 
     @Override
@@ -39,6 +57,22 @@ public class mainGameScreen implements Screen {
 
         Gdx.gl.glClearColor(1,0,0,1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        Vector3 camPos = camera.position;
+        int widthBorder = (Gdx.graphics.getWidth()/2) - player.getHeight();
+        int heightBorder = (Gdx.graphics.getHeight()/2) - player.getHeight();
+        if (player.getXPos() > camPos.x + widthBorder - player.getHeight()){
+        	camPos.x = player.getXPos() - widthBorder + player.getHeight();
+        }
+        if (player.getXPos() < camPos.x - widthBorder){
+        	camPos.x = player.getXPos() + widthBorder;
+        }
+        if (player.getYPos() > camPos.y + heightBorder - player.getHeight()){
+        	camPos.y = player.getYPos() - heightBorder + player.getHeight();
+        }
+        if (player.getYPos() < camPos.y - heightBorder) {
+        	camPos.y = player.getYPos() + heightBorder;
+        }
+        camera.position.set(camPos);
         camera.update();
         player.update();
 
@@ -47,7 +81,6 @@ public class mainGameScreen implements Screen {
         tiledMapRenderer.render();
         player.render(game.batch);
         game.batch.end();
-
 
     }
 
