@@ -3,6 +3,7 @@ package entities;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.yorkpiratesgame.io.Entity;
@@ -10,6 +11,7 @@ import com.yorkpiratesgame.io.Entity;
 public class Player extends Entity {
 
     private Texture img;
+    private Sprite sprite;
     private Vector2 pos;
     private float SPEED = 120;
     public int maxHealth = 100;
@@ -23,6 +25,7 @@ public class Player extends Entity {
 
     public Player(){
         img = new Texture("Ships/ship (1).png");
+        sprite = new Sprite(img);
         pos = new Vector2(0,0);
         width = img.getWidth();
         height = img.getHeight();
@@ -31,7 +34,7 @@ public class Player extends Entity {
 
     @Override
     public void render(SpriteBatch batch){
-        batch.draw(img, pos.x, pos.y);
+    	sprite.draw(batch);
     }
 
     @Override
@@ -40,26 +43,62 @@ public class Player extends Entity {
     }
 
     private void move(){
+    	float sin45 = 0.7f;
+    	boolean up = false;
+    	boolean down = false;
+    	boolean left = false;
+    	boolean right = false;
+    	
+    	if(Gdx.input.isKeyPressed(Input.Keys.W) | Gdx.input.isKeyPressed(Input.Keys.UP)) up = true;
+    	if(Gdx.input.isKeyPressed(Input.Keys.S) | Gdx.input.isKeyPressed(Input.Keys.DOWN)) down = true;
+    	if(Gdx.input.isKeyPressed(Input.Keys.A) | Gdx.input.isKeyPressed(Input.Keys.LEFT)) left = true;
+    	if(Gdx.input.isKeyPressed(Input.Keys.D) | Gdx.input.isKeyPressed(Input.Keys.RIGHT)) right = true;
+    	
         // move Up
-        if(Gdx.input.isKeyPressed(Input.Keys.W) | Gdx.input.isKeyPressed(Input.Keys.UP)){
+        if(up){
             pos.y += SPEED * Gdx.graphics.getDeltaTime();
+            sprite.setRotation(180);
         }
         //move Down
-        if(Gdx.input.isKeyPressed(Input.Keys.S) | Gdx.input.isKeyPressed(Input.Keys.DOWN)){
+        if(down){
             pos.y -= SPEED * Gdx.graphics.getDeltaTime();
-            if (pos.y < height) pos.y = height;
+            sprite.setRotation(0);
         }
         //move Left
-        if(Gdx.input.isKeyPressed(Input.Keys.A) | Gdx.input.isKeyPressed(Input.Keys.LEFT)){
+        if(left){
             pos.x -= SPEED * Gdx.graphics.getDeltaTime();
-            if (pos.x < height) pos.x = height;
+            sprite.setRotation(270);
         }
         //move Right
-        if(Gdx.input.isKeyPressed(Input.Keys.D) | Gdx.input.isKeyPressed(Input.Keys.RIGHT)){
+        if(right){
             pos.x += SPEED * Gdx.graphics.getDeltaTime();
+            sprite.setRotation(90);
         }
+        //taking away movement to make it same speed
+        if (up && right) {
+        	pos.x -= SPEED * (1-sin45) * Gdx.graphics.getDeltaTime();
+        	pos.y -= SPEED * (1-sin45) * Gdx.graphics.getDeltaTime();
+        	sprite.setRotation(135);
+        }
+        if (up && left) {
+        	pos.y -= SPEED * (1-sin45) * Gdx.graphics.getDeltaTime();
+        	pos.x += SPEED * (1-sin45) * Gdx.graphics.getDeltaTime();
+        	sprite.setRotation(225);
+        }
+        if (down && right) {
+        	pos.x -= SPEED * (1-sin45) * Gdx.graphics.getDeltaTime();
+        	pos.y += SPEED * (1-sin45) * Gdx.graphics.getDeltaTime();
+        	sprite.setRotation(45);
+        }
+        if (down && left) {
+        	pos.x += SPEED * (1-sin45) * Gdx.graphics.getDeltaTime();
+        	pos.y += SPEED * (1-sin45) * Gdx.graphics.getDeltaTime();
+        	sprite.setRotation(315);
+        }
+        
+        sprite.setPosition(pos.x, pos.y);
     }
-
+    
     public float getXPos(){
         return(pos.x);
     }
