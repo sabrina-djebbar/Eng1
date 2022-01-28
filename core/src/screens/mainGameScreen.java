@@ -29,10 +29,11 @@ public class mainGameScreen implements Screen {
     public void show() {
         camera = new OrthographicCamera();
         camera.setToOrtho(false,Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
+        camera.position.set(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2 , 0);
+        camera.update();
         gamemap = new TiledGameMap();
         player = new Player();
-        //Tile-size is 24x24. Therefore positions need be multiplied by 24
-        player.setPosition(1200,2880);
+        player.setPosition(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2);
     }
 
 
@@ -41,8 +42,6 @@ public class mainGameScreen implements Screen {
 
         Gdx.gl.glClearColor(59/255f,60/255f,54/255f,1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        camera.position.set(player.getXPos() - (player.getPlayerWidth() / 2), player.getYPos()  - (player.getPlayerHeight() / 2), 0);
-        camera.update();
         player.update();
 
         if (Gdx.input.justTouched()){

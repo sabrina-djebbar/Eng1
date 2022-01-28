@@ -4,18 +4,15 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.math.Vector2;
-import com.yorkpiratesgame.io.Entity;
-import screens.mainGameScreen;
 
 public class Player extends Entity {
 
     private Texture img;
     private Vector2 pos;
-    private float SPEED = 120;
-    private TiledMapTileLayer borderLayer;
+    private float SPEED = 60;
+    private String direction;
 
     public float playerWidth = 10;
     public float playerHeight = 10;
@@ -27,7 +24,8 @@ public class Player extends Entity {
     public int score;
 
     public Player(){
-        img = new Texture("Ships/shipRIGHT.png");
+        img = new Texture("Ships/ship.png");
+        direction = "UP";
         pos = new Vector2(0,0);
         currentHealth = maxHealth;
         armourRating = 1;
@@ -47,31 +45,39 @@ public class Player extends Entity {
     private void move(){
         // move Up
         if(Gdx.input.isKeyPressed(Input.Keys.W) | Gdx.input.isKeyPressed(Input.Keys.UP)){
-
-                pos.y += SPEED * Gdx.graphics.getDeltaTime();
-
+            pos.y += SPEED * Gdx.graphics.getDeltaTime();
+            if (direction != "UP") {
+                direction = "UP";
+                img.dispose();
+                img = new Texture("Ships/ship.png");
+            }
         }
         //move Down
-        if(Gdx.input.isKeyPressed(Input.Keys.S) | Gdx.input.isKeyPressed(Input.Keys.DOWN)){
-
-                pos.y -= SPEED * Gdx.graphics.getDeltaTime();
-
+        else if(Gdx.input.isKeyPressed(Input.Keys.S) | Gdx.input.isKeyPressed(Input.Keys.DOWN)){
+            pos.y -= SPEED * Gdx.graphics.getDeltaTime();
+            if (direction != "DOWN") {
+                direction = "DOWN";
+                img.dispose();
+                img = new Texture("Ships/shipDOWN.png");
+            }
         }
         //move Left
-        if(Gdx.input.isKeyPressed(Input.Keys.A) | Gdx.input.isKeyPressed(Input.Keys.LEFT)){
-
-                pos.x -= SPEED * Gdx.graphics.getDeltaTime();
-
-            img.dispose();
-            img = new Texture("Ships/shipLEFT.png");
+        else if(Gdx.input.isKeyPressed(Input.Keys.A) | Gdx.input.isKeyPressed(Input.Keys.LEFT)){
+            pos.x -= SPEED * Gdx.graphics.getDeltaTime();
+            if (direction != "LEFT") {
+                direction = "LEFT";
+                img.dispose();
+                img = new Texture("Ships/shipLEFT.png");
+            }
         }
         //move Right
-        if(Gdx.input.isKeyPressed(Input.Keys.D) | Gdx.input.isKeyPressed(Input.Keys.RIGHT)){
-
-                pos.x += SPEED * Gdx.graphics.getDeltaTime();
-
-            img.dispose();
-            img = new Texture("Ships/shipRIGHT.png");
+        else if(Gdx.input.isKeyPressed(Input.Keys.D) | Gdx.input.isKeyPressed(Input.Keys.RIGHT)){
+            pos.x += SPEED * Gdx.graphics.getDeltaTime();
+            if (direction != "RIGHT") {
+                direction = "RIGHT";
+                img.dispose();
+                img = new Texture("Ships/shipRIGHT.png");
+            }
         }
     }
 
