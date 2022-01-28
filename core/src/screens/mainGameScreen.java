@@ -7,7 +7,9 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 
 import entities.Player;
 
+import com.badlogic.gdx.math.Vector3;
 import com.yorkpiratesgame.io.GameMap;
+import com.yorkpiratesgame.io.TileType;
 import com.yorkpiratesgame.io.TiledGameMap;
 import com.yorkpiratesgame.io.YorkPirates;
 
@@ -42,6 +44,18 @@ public class mainGameScreen implements Screen {
         camera.position.set(player.getXPos() - (player.getPlayerWidth() / 2), player.getYPos()  - (player.getPlayerHeight() / 2), 0);
         camera.update();
         player.update();
+
+        if (Gdx.input.justTouched()){
+            Vector3 pos = camera.unproject(new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0));
+            TileType type = gamemap.getTileTypeByLocation(1, pos.x, pos.y);
+
+            if(type != null){
+                System.out.println("You clicked on tile with id " + type.getId() + " " + type.isCollidable());
+            }
+            else{
+                System.out.println("NULL");
+            }
+        }
 
         game.batch.begin();
         gamemap.render(camera);
