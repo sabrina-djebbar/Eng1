@@ -11,7 +11,7 @@ public class TiledGameMap extends GameMap {
     OrthogonalTiledMapRenderer tiledMapRenderer;
 
     public TiledGameMap(){
-        tiledMap = new TmxMapLoader().load("GameMap/testmap.tmx");
+        tiledMap = new TmxMapLoader().load("GameMap/testmapRedesign.tmx");
         tiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap);
     }
 
