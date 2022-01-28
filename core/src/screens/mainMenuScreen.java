@@ -33,10 +33,13 @@ public class mainMenuScreen  implements Screen {
     Texture exitButtonInactive;
     Texture playButtonActive;
     Texture playButtonInactive;
-    ;
 
     public mainMenuScreen(YorkPirates game){
         this.game = game;
+    }
+
+    @Override
+    public void show() {
         title = new Texture("menu/titleHeader.png");
         playButtonActive = new Texture("menu/playActive.png");
         playButtonInactive = new Texture("menu/play.png");
@@ -47,11 +50,6 @@ public class mainMenuScreen  implements Screen {
         camera.update();
         tiledMap = new TmxMapLoader().load("menu/menuBackground.tmx");
         tiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap);
-
-    }
-
-    @Override
-    public void show() {
     }
 
     @Override

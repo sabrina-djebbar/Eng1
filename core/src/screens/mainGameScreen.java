@@ -4,21 +4,21 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.maps.tiled.TiledMap;
-import com.badlogic.gdx.maps.tiled.TmxMapLoader;
-import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
+
 import entities.Player;
+
+import com.badlogic.gdx.math.Vector3;
+import com.yorkpiratesgame.io.GameMap;
+import com.yorkpiratesgame.io.TileType;
+import com.yorkpiratesgame.io.TiledGameMap;
 import com.yorkpiratesgame.io.YorkPirates;
 
 public class mainGameScreen implements Screen {
 
-    private TiledMap tiledMap;
-    private OrthogonalTiledMapRenderer tiledMapRenderer;
-    private OrthographicCamera camera;
-
+    public static OrthographicCamera camera;
+    public static GameMap gamemap;
     private Player player;
+    private float playerPosX;
     YorkPirates game;
 
     public mainGameScreen (YorkPirates game){
@@ -27,24 +27,37 @@ public class mainGameScreen implements Screen {
 
     @Override
     public void show() {
-        tiledMap = new TmxMapLoader().load("GameMap/mainMap(1).tmx");
-        tiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap);
         camera = new OrthographicCamera();
         camera.setToOrtho(false,Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
+        camera.position.set(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2 , 0);
+        camera.update();
+        gamemap = new TiledGameMap();
         player = new Player();
+        player.setPosition(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2);
     }
+
 
     @Override
     public void render(float delta) {
 
-        Gdx.gl.glClearColor(1,0,0,1);
+        Gdx.gl.glClearColor(59/255f,60/255f,54/255f,1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        camera.update();
         player.update();
 
-        tiledMapRenderer.setView(camera);
+        if (Gdx.input.justTouched()){
+            Vector3 pos = camera.unproject(new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0));
+            TileType type = gamemap.getTileTypeByLocation(1, pos.x, pos.y);
+
+            if(type != null){
+                System.out.println("You clicked on tile with id " + type.getId() + " " + type.isCollidable());
+            }
+            else{
+                System.out.println("NULL");
+            }
+        }
+
         game.batch.begin();
-        tiledMapRenderer.render();
+        gamemap.render(camera);
         player.render(game.batch);
         game.batch.end();
 
@@ -53,8 +66,8 @@ public class mainGameScreen implements Screen {
 
     @Override
     public void resize(int width, int height) {
-        camera.viewportWidth = YorkPirates.WIDTH;
-        camera.viewportHeight = YorkPirates.HEIGHT;
+        camera.viewportWidth = width;
+        camera.viewportHeight = height;
         camera.update();
     }
 
@@ -75,7 +88,6 @@ public class mainGameScreen implements Screen {
 
     @Override
     public void dispose() {
-        tiledMap.dispose();
-        tiledMapRenderer.dispose();
+
     }
 }
