@@ -4,14 +4,21 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.maps.tiled.TiledMap;
+import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.math.Vector2;
 import com.yorkpiratesgame.io.Entity;
+import screens.mainGameScreen;
 
 public class Player extends Entity {
 
     private Texture img;
     private Vector2 pos;
     private float SPEED = 120;
+    private TiledMapTileLayer borderLayer;
+
+    public float playerWidth = 10;
+    public float playerHeight = 10;
     public int maxHealth = 100;
     public int currentHealth;
     public int armourRating;
@@ -20,7 +27,7 @@ public class Player extends Entity {
     public int score;
 
     public Player(){
-        img = new Texture("Ships/ship (1).png");
+        img = new Texture("Ships/shipRIGHT.png");
         pos = new Vector2(0,0);
         currentHealth = maxHealth;
         armourRating = 1;
@@ -40,21 +47,35 @@ public class Player extends Entity {
     private void move(){
         // move Up
         if(Gdx.input.isKeyPressed(Input.Keys.W) | Gdx.input.isKeyPressed(Input.Keys.UP)){
-            pos.y += SPEED * Gdx.graphics.getDeltaTime();
+
+                pos.y += SPEED * Gdx.graphics.getDeltaTime();
+
         }
         //move Down
         if(Gdx.input.isKeyPressed(Input.Keys.S) | Gdx.input.isKeyPressed(Input.Keys.DOWN)){
-            pos.y -= SPEED * Gdx.graphics.getDeltaTime();
+
+                pos.y -= SPEED * Gdx.graphics.getDeltaTime();
+
         }
         //move Left
         if(Gdx.input.isKeyPressed(Input.Keys.A) | Gdx.input.isKeyPressed(Input.Keys.LEFT)){
-            pos.x -= SPEED * Gdx.graphics.getDeltaTime();
+
+                pos.x -= SPEED * Gdx.graphics.getDeltaTime();
+
+            img.dispose();
+            img = new Texture("Ships/shipLEFT.png");
         }
         //move Right
         if(Gdx.input.isKeyPressed(Input.Keys.D) | Gdx.input.isKeyPressed(Input.Keys.RIGHT)){
-            pos.x += SPEED * Gdx.graphics.getDeltaTime();
+
+                pos.x += SPEED * Gdx.graphics.getDeltaTime();
+
+            img.dispose();
+            img = new Texture("Ships/shipRIGHT.png");
         }
     }
+
+
 
     public float getXPos(){
         return(pos.x);
@@ -62,6 +83,14 @@ public class Player extends Entity {
 
     public float getYPos(){
         return(pos.y);
+    }
+
+    public float getPlayerWidth(){ return(playerWidth); }
+
+    public float getPlayerHeight(){ return(playerHeight); }
+
+    public Vector2 getPos() {
+        return pos;
     }
 
     public int getCurrentHealth(){
@@ -76,15 +105,24 @@ public class Player extends Entity {
         return(gold);
     }
 
-    public void setGold(){
+    public void setPosition(float x, float y){
+        pos.x = x;
+        pos.y = y;
+    }
+
+    public void setGold(int collectedGold){
 
     }
 
-    public void setArmourRating(){
+    public void setArmourRating(float newArmour){
 
     }
 
-    public void setWeaponDamage(){
+    public void setSPEED(float newSpeed){
+
+    }
+
+    public void setWeaponDamage(float newWeaponDamage){
 
     }
 
