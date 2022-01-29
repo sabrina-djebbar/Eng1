@@ -2,6 +2,7 @@ package screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 
@@ -13,6 +14,11 @@ import com.badlogic.gdx.math.Vector3;
 import MapResources.GameMap;
 import MapResources.TileType;
 import MapResources.TiledGameMap;
+
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.utils.Align;
+import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.yorkpiratesgame.io.YorkPirates;
 
 import java.lang.reflect.Array;
@@ -29,9 +35,10 @@ public class mainGameScreen implements Screen {
 
     YorkPirates game;
 
-    public Texture objectiveLabel;
     public Texture healthBar;
-    public Texture plunderValue;
+    public Stage stage;
+    public Color labelColour;
+    public Label.LabelStyle pirateLabelStyle;
 
     //Set current screen to game
     public mainGameScreen (YorkPirates game){
@@ -56,24 +63,56 @@ public class mainGameScreen implements Screen {
         player.setYPos(Gdx.graphics.getHeight()/2);
 
         //Randomly select an objective at the start of each game from available colleges
-        List<String> objectives = new ArrayList<>(Arrays.asList("UI/objectiveJames.png", "UI/objectiveConstantine.png", "UI/objectiveHalifax.png", "UI/objectiveGoodricke.png"));
+        List<String> objectives = new ArrayList<>(Arrays.asList("objectiveJames", "objectiveConstantine", "objectiveHalifax", "objectiveGoodricke"));
         Random randomizer = new Random();
         String random = objectives.get(randomizer.nextInt(objectives.size()));
         //Set objectiveCollege in player
-        if(random == "UI/objectiveJames.png"){player.setObjectiveCollege("James College");}
-        else if (random == "UI/objectiveConstantine.png")player.setObjectiveCollege("Constantine College");
-        else if (random == "UI/objectiveHalifax.png"){player.setObjectiveCollege("Halifax College");}
-        else if (random == "UI/objectiveGoodricke.png"){player.setObjectiveCollege("Goodricke College");}
-        //Assign college img to texture to render
-        objectiveLabel = new Texture(random);
+        if(random == "objectiveJames"){player.setObjectiveCollege("James College");}
+        else if (random == "objectiveConstantine")player.setObjectiveCollege("Constantine College");
+        else if (random == "objectiveHalifax"){player.setObjectiveCollege("Halifax College");}
+        else if (random == "objectiveGoodricke"){player.setObjectiveCollege("Goodricke College");}
+
+        //Assign stage for user interface
+        stage = new Stage(new ScreenViewport());
+
+        //Create colour for labels
+        labelColour = new Color(59/255f,60/255f,54/255f, 3/2);
+        //Create label style
+        pirateLabelStyle = new Label.LabelStyle();
+        BitmapFont myFont = new BitmapFont(Gdx.files.internal("UI/pirateFont.fnt"));
+        pirateLabelStyle.font = myFont;
+
     }
 
     //drawUI() will overlay all necessary information for the user.
     //for instance their objective, score/plunder amount and health
     public void drawUI(){
-        game.batch.begin();
-        game.batch.draw(objectiveLabel, ((YorkPirates.WIDTH / 2) - (objectiveLabel.getWidth() / 2)), YorkPirates.HEIGHT - objectiveLabel.getHeight());
-        game.batch.end();
+        //Create score label which will be
+        Label ScoreLabel = new Label(("Plunder: " + player.getGold()),pirateLabelStyle);
+        ScoreLabel.setSize(Gdx.graphics.getWidth(),12);
+        ScoreLabel.setPosition(0,Gdx.graphics.getHeight()-12*2);
+        ScoreLabel.setAlignment(Align.left);
+        ScoreLabel.setColor(labelColour);
+        stage.addActor(ScoreLabel);
+
+        Label ObjectiveLabel = new Label("Objective",pirateLabelStyle);
+        ObjectiveLabel.setSize(Gdx.graphics.getWidth(),12);
+        ObjectiveLabel.setPosition(0,Gdx.graphics.getHeight()-30);
+        ObjectiveLabel.setAlignment(Align.center);
+        ObjectiveLabel.setColor(labelColour);
+        ObjectiveLabel.setFontScale(2);
+        stage.addActor(ObjectiveLabel);
+
+        Label ObjectiveCollegeLabel = new Label(("DEFEAT " + player.getObjectiveCollege()),pirateLabelStyle);
+        ObjectiveCollegeLabel.setSize(Gdx.graphics.getWidth(),10);
+        ObjectiveCollegeLabel.setPosition(0,Gdx.graphics.getHeight()-80);
+        ObjectiveCollegeLabel.setAlignment(Align.center);
+        ObjectiveCollegeLabel.setColor(labelColour);
+        stage.addActor(ObjectiveCollegeLabel);
+
+        //Draw UI Stage
+        stage.act();
+        stage.draw();
     }
 
     @Override
@@ -173,6 +212,5 @@ public class mainGameScreen implements Screen {
     //Dispose of img's and other batch objects to save on memory space
     @Override
     public void dispose() {
-        objectiveLabel.dispose();
     }
 }
