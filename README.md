@@ -17,7 +17,7 @@ So far the following features have added:
  
 Building and Deployment
 -----------------------
-I recommend using the Android Studio or Eclipse methods for runnig the projet seen
+I recommend using the Android Studio or Eclipse methods for running the projet seen
 [here](https://libgdx.com/wiki/start/import-and-running).
 You can build the project using the export functions in Android Studio, Eclipse.
 
