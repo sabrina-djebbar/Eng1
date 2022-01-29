@@ -62,7 +62,7 @@ public class mainGameScreen implements Screen {
         if (player.getYPos() < player.getHeight()) player.setYPos(player.getHeight());
         
         Vector3 camPos = camera.position;
-        int widthBorder = (Gdx.graphics.getWidth()/2) - player.getHeight();
+        int widthBorder = (Gdx.graphics.getWidth()/2) - player.getWidth();
         int heightBorder = (Gdx.graphics.getHeight()/2) - player.getHeight();
         if (player.getXPos() > camPos.x + widthBorder - player.getHeight()){
         	camPos.x = player.getXPos() - widthBorder + player.getHeight();
