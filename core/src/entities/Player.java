@@ -13,21 +13,24 @@ public class Player extends Entity {
     private Texture img;
     private Sprite sprite;
     private Vector2 pos;
+    //Initialise speed - how fast the player sprite can move
     private float SPEED = 90;
 
+    //Initialise player values to be used later in development
+    public String objectiveCollege;
     public float playerWidth = 10;
     public float playerHeight = 10;
     public int maxHealth = 100;
     public int currentHealth, armourRating, weaponDamage;
     public int gold, score, width, height;
 
+    //Initialise player as a sprite and position
     public Player(){
-        img = new Texture("Ships/ship (1).png");
+        img = new Texture("Ships/ship.png");
         sprite = new Sprite(img);
         pos = new Vector2(0,0);
         width = img.getWidth();
         height = img.getHeight();
-
     }
 
     @Override
@@ -47,6 +50,8 @@ public class Player extends Entity {
         boolean left = false;
         boolean right = false;
 
+        //If key is pressed set values to true
+        //Player can be operated using both WASD and arrow keys
         if(Gdx.input.isKeyPressed(Input.Keys.W) | Gdx.input.isKeyPressed(Input.Keys.UP)) up = true;
         if(Gdx.input.isKeyPressed(Input.Keys.S) | Gdx.input.isKeyPressed(Input.Keys.DOWN)) down = true;
         if(Gdx.input.isKeyPressed(Input.Keys.A) | Gdx.input.isKeyPressed(Input.Keys.LEFT)) left = true;
@@ -93,13 +98,9 @@ public class Player extends Entity {
             pos.y += SPEED * (1-sin45) * Gdx.graphics.getDeltaTime();
             sprite.setRotation(315);
         }
-
+        //Set new sprite position
         sprite.setPosition(pos.x, pos.y);
     }
-
-    public float getPlayerWidth(){ return(playerWidth); }
-
-    public float getPlayerHeight(){ return(playerHeight); }
 
     public Vector2 getPos() {
         return pos;
@@ -125,6 +126,8 @@ public class Player extends Entity {
         return(height);
     }
 
+    public String getObjectiveCollege(){return objectiveCollege;}
+
     public float getXPos(){
         return(pos.x);
     }
@@ -141,6 +144,9 @@ public class Player extends Entity {
         pos.y = y;
     }
 
+    public void setObjectiveCollege(String objectiveCollege){
+        this.objectiveCollege = objectiveCollege;
+    }
 
     public void setGold(int collectedGold){
 

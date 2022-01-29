@@ -33,35 +33,52 @@ public class mainMenuScreen  implements Screen {
     Texture exitButtonInactive;
     Texture playButtonActive;
     Texture playButtonInactive;
+    Texture watermarkBestCollege;
 
+    //Set current screen to game window
     public mainMenuScreen(YorkPirates game){
         this.game = game;
     }
 
     @Override
     public void show() {
+        //Assign menu images to Textures for rendering
         title = new Texture("menu/titleHeader.png");
         playButtonActive = new Texture("menu/playActive.png");
         playButtonInactive = new Texture("menu/play.png");
         exitButtonActive = new Texture("menu/exitActive.png");
         exitButtonInactive = new Texture("menu/exit.png");
+        watermarkBestCollege = new Texture("menu/Watermark.png");
+
         camera = new OrthographicCamera();
+        //camera.position.set(camera.viewportWidth, camera.viewportHeight, 0);
+        camera.position.set(Gdx.graphics.getWidth()/2, Gdx.graphics.getHeight()/2, 0);
+        //camera.setToOrtho(false,Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
         camera.setToOrtho(false,Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
         camera.update();
-        tiledMap = new TmxMapLoader().load("menu/menuBackground.tmx");
+
+        //Initialise the tilemap for the main menu
+        tiledMap = new TmxMapLoader().load("GameMaps/menuMap.tmx");
         tiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap);
     }
 
     @Override
     public void render(float delta) {
+
+        //Draw background colour for regions outside the game
+        Gdx.gl.glClearColor(59/255f,60/255f,54/255f,1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
+        //Begin rendering batch
         game.batch.begin();
-        camera.update();
+        //Render tilemap to camera
         tiledMapRenderer.setView(camera);
         tiledMapRenderer.render();
 
+        //Render title texture
         game.batch.draw(title, ((YorkPirates.WIDTH / 2) - (TITLE_HEADER_WIDTH / 2)), 600);
 
+        //Check if exit button is pressed and exit game
         int buttonCordX = (YorkPirates.WIDTH / 2) - (EXIT_BUTTON_WIDTH / 2);
         if (Gdx.input.getX() < buttonCordX + EXIT_BUTTON_WIDTH && Gdx.input.getX() > buttonCordX && YorkPirates.HEIGHT - Gdx.input.getY() < EXIT_BUTTON_Y + EXIT_BUTTON_HEIGHT && YorkPirates.HEIGHT - Gdx.input.getY() > EXIT_BUTTON_Y){
             game.batch.draw(exitButtonActive, buttonCordX, EXIT_BUTTON_Y, EXIT_BUTTON_WIDTH,EXIT_BUTTON_HEIGHT);
@@ -72,6 +89,7 @@ public class mainMenuScreen  implements Screen {
             game.batch.draw(exitButtonInactive, buttonCordX, EXIT_BUTTON_Y, EXIT_BUTTON_WIDTH,EXIT_BUTTON_HEIGHT);
         }
 
+        //Check if play button is pressed and move to game screen
         buttonCordX = (YorkPirates.WIDTH / 2) - (PLAY_BUTTON_WIDTH / 2);
         if (Gdx.input.getX() < buttonCordX + EXIT_BUTTON_WIDTH && Gdx.input.getX() > buttonCordX && YorkPirates.HEIGHT - Gdx.input.getY() < PLAY_BUTTON_Y + PLAY_BUTTON_HEIGHT && YorkPirates.HEIGHT - Gdx.input.getY() > PLAY_BUTTON_Y){
             game.batch.draw(playButtonActive, buttonCordX, PLAY_BUTTON_Y, PLAY_BUTTON_WIDTH,PLAY_BUTTON_HEIGHT);
@@ -82,6 +100,9 @@ public class mainMenuScreen  implements Screen {
             game.batch.draw(playButtonInactive, buttonCordX, PLAY_BUTTON_Y, PLAY_BUTTON_WIDTH,PLAY_BUTTON_HEIGHT);
         }
 
+        game.batch.draw(watermarkBestCollege, Gdx.graphics.getWidth() - watermarkBestCollege.getWidth(), 0);
+
+        //Finish rendering batch
         game.batch.end();
     }
 
@@ -105,6 +126,7 @@ public class mainMenuScreen  implements Screen {
 
     }
 
+    //Dispose of img's and other batch objects to save on memory space
     @Override
     public void dispose() {
         title.dispose();
