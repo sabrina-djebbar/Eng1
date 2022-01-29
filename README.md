@@ -13,7 +13,7 @@ So far the following features have added:
  LibGDX is an Open Source framework that we used to develop York Pirates!
  I recommend looking at [A Simple Game](https://libgdx.com/wiki/start/a-simple-game)
  which the college combat is based on.
- The [wiki](https://libgdx.com/wiki/) is the place to go if you need help understanding things like the TileMap system.
+ The [wiki](https://libgdx.com/wiki/) is the place to go for help with things like the TileMap system.
  
 Building and Deployment
 -----------------------
