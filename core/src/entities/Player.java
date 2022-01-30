@@ -1,5 +1,6 @@
 package entities;
 
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Texture;
@@ -8,6 +9,10 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.math.Vector2;
 
+import MapResources.GameMap;
+import MapResources.TileType;
+import MapResources.TiledGameMap;
+
 public class Player extends Entity {
 
     private Texture img;
@@ -15,22 +20,31 @@ public class Player extends Entity {
     private Vector2 pos;
     //Initialise speed - how fast the player sprite can move
     private float SPEED = 90;
+    //Initialise the Tilemap for this game
+    TiledGameMap gameMap = new TiledGameMap();
+    //Checker for college combat
+    boolean collegeCombat;
+    String collegeToAttack;
 
     //Initialise player values to be used later in development
     public String objectiveCollege;
-    public float playerWidth = 10;
-    public float playerHeight = 10;
     public int maxHealth = 100;
     public int currentHealth, armourRating, weaponDamage;
-    public int gold, score, width, height;
+    public int gold, score, width, height, requiredPlunder;
 
     //Initialise player as a sprite and position
     public Player(){
-        img = new Texture("Ships/ship.png");
+        img = new Texture("Ships/ship_still.png");
         sprite = new Sprite(img);
         pos = new Vector2(0,0);
         width = img.getWidth();
         height = img.getHeight();
+        gold = 0;
+        score = 0;
+        armourRating = 1;
+        weaponDamage = 1;
+        currentHealth = maxHealth;
+        collegeCombat = false;
     }
 
     @Override
@@ -45,10 +59,13 @@ public class Player extends Entity {
 
     private void move(){
         float sin45 = 0.7f;
+        float oldPosX = pos.x;
+        float oldPosY = pos.y;
         boolean up = false;
         boolean down = false;
         boolean left = false;
         boolean right = false;
+
 
         //If key is pressed set values to true
         //Player can be operated using both WASD and arrow keys
@@ -60,46 +77,281 @@ public class Player extends Entity {
         // move Up
         if(up){
             pos.y += SPEED * Gdx.graphics.getDeltaTime();
-            sprite.setRotation(180);
+            sprite.setRotation(0);
         }
         //move Down
         if(down){
             pos.y -= SPEED * Gdx.graphics.getDeltaTime();
-            sprite.setRotation(0);
+            sprite.setRotation(180);
         }
         //move Left
         if(left){
             pos.x -= SPEED * Gdx.graphics.getDeltaTime();
-            sprite.setRotation(270);
+            sprite.setRotation(90);
         }
         //move Right
         if(right){
             pos.x += SPEED * Gdx.graphics.getDeltaTime();
-            sprite.setRotation(90);
+            sprite.setRotation(270);
         }
         //taking away movement to make it same speed
         if (up && right) {
             pos.x -= SPEED * (1-sin45) * Gdx.graphics.getDeltaTime();
             pos.y -= SPEED * (1-sin45) * Gdx.graphics.getDeltaTime();
-            sprite.setRotation(135);
+            sprite.setRotation(315);
         }
         if (up && left) {
             pos.y -= SPEED * (1-sin45) * Gdx.graphics.getDeltaTime();
             pos.x += SPEED * (1-sin45) * Gdx.graphics.getDeltaTime();
-            sprite.setRotation(225);
+            sprite.setRotation(45);
         }
         if (down && right) {
             pos.x -= SPEED * (1-sin45) * Gdx.graphics.getDeltaTime();
             pos.y += SPEED * (1-sin45) * Gdx.graphics.getDeltaTime();
-            sprite.setRotation(45);
+            sprite.setRotation(225);
         }
         if (down && left) {
             pos.x += SPEED * (1-sin45) * Gdx.graphics.getDeltaTime();
             pos.y += SPEED * (1-sin45) * Gdx.graphics.getDeltaTime();
-            sprite.setRotation(315);
+            sprite.setRotation(135);
         }
+        if(!down && !left && !right && !up){
+            //Still animation
+        }
+
+        checkCollision(oldPosX, oldPosY, pos.x, pos.y);
+
+
         //Set new sprite position
         sprite.setPosition(pos.x, pos.y);
+    }
+
+    public void checkCollision(float oldX, float oldY, float x, float y){
+
+        for(int layer = 1; layer < 2; layer++) {
+            TileType tileLeft = gameMap.getTileTypeByLocation(layer, x, y);
+            if(tileLeft != null) {
+                if (tileLeft.isCollidable()) {
+                    if (tileLeft.getName() == "Goodricke College") {
+                        if ("Goodricke College" == objectiveCollege) {
+                            if (requiredPlunder == 0) {
+                                collegeCombat = true;
+                                collegeToAttack = objectiveCollege;
+                            } else {
+                                pos.x = oldX;
+                                pos.y = oldY;
+                            }
+                        }
+                    }
+                    else if (tileLeft.getName() == "Constantine College") {
+                        if ("Constantine College" == objectiveCollege) {
+                            if (requiredPlunder == 0) {
+                                collegeCombat = true;
+                                collegeToAttack = objectiveCollege;
+                            } else {
+                                pos.x = oldX;
+                                pos.y = oldY;
+                            }
+                        }
+                    }
+                    else if (tileLeft.getName() == "Halifax College") {
+                        if ("Halifax College" == objectiveCollege) {
+                            if (requiredPlunder == 0) {
+                                collegeCombat = true;
+                                collegeToAttack = objectiveCollege;
+                            } else {
+                                pos.x = oldX;
+                                pos.y = oldY;
+                            }
+                        }
+                    }
+                    else if (tileLeft.getName() == "James College") {
+                        if ("James College" == objectiveCollege) {
+                            if (requiredPlunder == 0) {
+                                collegeCombat = true;
+                                collegeToAttack = objectiveCollege;
+                            } else {
+                                pos.x = oldX;
+                                pos.y = oldY;
+                            }
+                        }
+                    }
+                    else if (tileLeft.getName() == "Small Island") {
+                        pos.x = oldX;
+                        pos.y = oldY;
+                    }
+                    else {
+                        pos.x = oldX;
+                        pos.y = oldY;
+                    }
+                }
+            }
+
+            TileType tileRight = gameMap.getTileTypeByLocation(layer, x + getWidth(), y);
+            if(tileRight != null) {
+                if (tileRight.isCollidable()) {
+                    if (tileRight.getName() == "Goodricke College") {
+                        if ("Goodricke College" == objectiveCollege) {
+                            if (requiredPlunder == 0) {
+                                collegeCombat = true;
+                                collegeToAttack = objectiveCollege;
+                            } else {
+                                pos.x = oldX;
+                                pos.y = oldY;
+                            }
+                        }
+                    } else if (tileRight.getName() == "Constantine College") {
+                        if ("Constantine College" == objectiveCollege) {
+                            if (requiredPlunder == 0) {
+                                collegeCombat = true;
+                                collegeToAttack = objectiveCollege;
+                            } else {
+                                pos.x = oldX;
+                                pos.y = oldY;
+                            }
+                        }
+                    } else if (tileRight.getName() == "Halifax College") {
+                        if ("Halifax College" == objectiveCollege) {
+                            if (requiredPlunder == 0) {
+                                collegeCombat = true;
+                                collegeToAttack = objectiveCollege;
+                            } else {
+                                pos.x = oldX;
+                                pos.y = oldY;
+                            }
+                        }
+                    } else if (tileRight.getName() == "James College") {
+                        if ("James College" == objectiveCollege) {
+                            if (requiredPlunder == 0) {
+                                collegeCombat = true;
+                                collegeToAttack = objectiveCollege;
+                            } else {
+                                pos.x = oldX;
+                                pos.y = oldY;
+                            }
+                        }
+                    } else if (tileRight.getName() == "Small Island") {
+                        pos.x = oldX;
+                        pos.y = oldY;
+                    } else {
+                        pos.x = oldX;
+                        pos.y = oldY;
+                    }
+                }
+            }
+
+            TileType tileTop = gameMap.getTileTypeByLocation(layer, x + getWidth(), y + getHeight());
+            if(tileTop != null) {
+                if (tileTop.isCollidable()) {
+                    if (tileTop.getName() == "Goodricke College") {
+                        if ("Goodricke College" == objectiveCollege) {
+                            if (requiredPlunder == 0) {
+                                collegeCombat = true;
+                                collegeToAttack = objectiveCollege;
+                            } else {
+                                pos.x = oldX;
+                                pos.y = oldY;
+                            }
+                        }
+                    }
+                    else if (tileTop.getName() == "Constantine College") {
+                        if ("Constantine College" == objectiveCollege) {
+                            if (requiredPlunder == 0) {
+                                collegeCombat = true;
+                                collegeToAttack = objectiveCollege;
+                            } else {
+                                pos.x = oldX;
+                                pos.y = oldY;
+                            }
+                        }
+                    }
+                    else if (tileTop.getName() == "Halifax College") {
+                        if ("Halifax College" == objectiveCollege) {
+                            if (requiredPlunder == 0) {
+                                collegeCombat = true;
+                                collegeToAttack = objectiveCollege;
+                            } else {
+                                pos.x = oldX;
+                                pos.y = oldY;
+                            }
+                        }
+                    }
+                    else if (tileTop.getName() == "James College") {
+                        if ("James College" == objectiveCollege) {
+                            if (requiredPlunder == 0) {
+                                collegeCombat = true;
+                                collegeToAttack = objectiveCollege;
+                            } else {
+                                pos.x = oldX;
+                                pos.y = oldY;
+                            }
+                        }
+                    }
+                    else if (tileTop.getName() == "Small Island") {
+                        pos.x = oldX;
+                        pos.y = oldY;
+                    }
+                    else {
+                        pos.x = oldX;
+                        pos.y = oldY;
+                    }
+                }
+            }
+
+            TileType tileBottom = gameMap.getTileTypeByLocation(layer, x, y + getHeight());
+            if(tileBottom != null) {
+                if (tileBottom.isCollidable()) {
+                    if (tileBottom.getName() == "Goodricke College") {
+                        if ("Goodricke College" == objectiveCollege) {
+                            if (requiredPlunder == 0) {
+                                collegeCombat = true;
+                                collegeToAttack = objectiveCollege;
+                            } else {
+                                pos.x = oldX;
+                                pos.y = oldY;
+                            }
+                        }
+                    } else if (tileBottom.getName() == "Constantine College") {
+                        if ("Constantine College" == objectiveCollege) {
+                            if (requiredPlunder == 0) {
+                                collegeCombat = true;
+                                collegeToAttack = objectiveCollege;
+                            } else {
+                                pos.x = oldX;
+                                pos.y = oldY;
+                            }
+                        }
+                    } else if (tileBottom.getName() == "Halifax College") {
+                        if ("Halifax College" == objectiveCollege) {
+                            if (requiredPlunder == 0) {
+                                collegeCombat = true;
+                                collegeToAttack = objectiveCollege;
+                            } else {
+                                pos.x = oldX;
+                                pos.y = oldY;
+                            }
+                        }
+                    } else if (tileBottom.getName() == "James College") {
+                        if ("James College" == objectiveCollege) {
+                            if (requiredPlunder == 0) {
+                                collegeCombat = true;
+                                collegeToAttack = objectiveCollege;
+                            } else {
+                                pos.x = oldX;
+                                pos.y = oldY;
+                            }
+                        }
+                    } else if (tileBottom.getName() == "Small Island") {
+                        pos.x = oldX;
+                        pos.y = oldY;
+                    } else {
+                        pos.x = oldX;
+                        pos.y = oldY;
+                    }
+                }
+            }
+        }
+
     }
 
     public Vector2 getPos() {
@@ -128,6 +380,8 @@ public class Player extends Entity {
 
     public String getObjectiveCollege(){return objectiveCollege;}
 
+    public int getRequiredPlunder(){return requiredPlunder;}
+
     public float getXPos(){
         return(pos.x);
     }
@@ -146,10 +400,25 @@ public class Player extends Entity {
 
     public void setObjectiveCollege(String objectiveCollege){
         this.objectiveCollege = objectiveCollege;
+        if(this.objectiveCollege == "Goodricke College"){
+            requiredPlunder = 25;
+        }
+        else if(this.objectiveCollege == "Constantine College"){
+            requiredPlunder = 50;
+        }
+        else if(this.objectiveCollege == "Halifax College"){
+            requiredPlunder = 75;
+        }
+        else if(this.objectiveCollege == "James College"){
+            requiredPlunder = 100;
+        }
     }
 
     public void setGold(int collectedGold){
-
+        gold += collectedGold;
+        if (requiredPlunder != 0){
+            requiredPlunder -= collectedGold;
+        }
     }
 
     public void setArmourRating(float newArmour){

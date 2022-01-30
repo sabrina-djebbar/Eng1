@@ -19,7 +19,7 @@ public class TiledGameMap extends GameMap {
     private int mapWidth;
 
     public TiledGameMap(){
-        tiledMap = new TmxMapLoader().load("GameMaps/mainMap1.tmx");
+        tiledMap = new TmxMapLoader().load("GameMaps/menuMap.tmx");
         tiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap);
         mapHeight = ((int) tiledMap.getProperties().get("tileheight")) * ((int) tiledMap.getProperties().get("height"));
         mapWidth = ((int) tiledMap.getProperties().get("tilewidth")) * ((int) tiledMap.getProperties().get("width"));

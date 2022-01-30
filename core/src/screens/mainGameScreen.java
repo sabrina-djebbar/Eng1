@@ -15,13 +15,9 @@ import MapResources.GameMap;
 import MapResources.TileType;
 import MapResources.TiledGameMap;
 
-import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.utils.Align;
-import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.yorkpiratesgame.io.YorkPirates;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -36,9 +32,9 @@ public class mainGameScreen implements Screen {
     YorkPirates game;
 
     public Texture healthBar;
-    public Stage stage;
-    public Color labelColour;
-    public Label.LabelStyle pirateLabelStyle;
+    private BitmapFont pirateFont;
+    private Color fontColour;
+
 
     //Set current screen to game
     public mainGameScreen (YorkPirates game){
@@ -72,47 +68,24 @@ public class mainGameScreen implements Screen {
         else if (random == "objectiveHalifax"){player.setObjectiveCollege("Halifax College");}
         else if (random == "objectiveGoodricke"){player.setObjectiveCollege("Goodricke College");}
 
-        //Assign stage for user interface
-        stage = new Stage(new ScreenViewport());
 
         //Create colour for labels
-        labelColour = new Color(59/255f,60/255f,54/255f, 3/2);
-        //Create label style
-        pirateLabelStyle = new Label.LabelStyle();
-        BitmapFont myFont = new BitmapFont(Gdx.files.internal("UI/pirateFont.fnt"));
-        pirateLabelStyle.font = myFont;
-
+        fontColour = new Color(59/255f,60/255f,54/255f, 3/2);
+        pirateFont = new BitmapFont(Gdx.files.internal("UI/pirateFont.fnt"));
+        pirateFont.setColor(fontColour);
     }
 
     //drawUI() will overlay all necessary information for the user.
     //for instance their objective, score/plunder amount and health
     public void drawUI(){
-        //Create score label which will be
-        Label ScoreLabel = new Label(("Plunder: " + player.getGold()),pirateLabelStyle);
-        ScoreLabel.setSize(Gdx.graphics.getWidth(),12);
-        ScoreLabel.setPosition(0,Gdx.graphics.getHeight()-12*2);
-        ScoreLabel.setAlignment(Align.left);
-        ScoreLabel.setColor(labelColour);
-        stage.addActor(ScoreLabel);
-
-        Label ObjectiveLabel = new Label("Objective",pirateLabelStyle);
-        ObjectiveLabel.setSize(Gdx.graphics.getWidth(),12);
-        ObjectiveLabel.setPosition(0,Gdx.graphics.getHeight()-30);
-        ObjectiveLabel.setAlignment(Align.center);
-        ObjectiveLabel.setColor(labelColour);
-        ObjectiveLabel.setFontScale(2);
-        stage.addActor(ObjectiveLabel);
-
-        Label ObjectiveCollegeLabel = new Label(("DEFEAT " + player.getObjectiveCollege()),pirateLabelStyle);
-        ObjectiveCollegeLabel.setSize(Gdx.graphics.getWidth(),10);
-        ObjectiveCollegeLabel.setPosition(0,Gdx.graphics.getHeight()-80);
-        ObjectiveCollegeLabel.setAlignment(Align.center);
-        ObjectiveCollegeLabel.setColor(labelColour);
-        stage.addActor(ObjectiveCollegeLabel);
-
-        //Draw UI Stage
-        stage.act();
-        stage.draw();
+        game.batch.begin();
+        pirateFont.draw(game.batch, "Plunder: " + player.getGold(), 5, Gdx.graphics.getHeight() - 5);
+        if(player.getRequiredPlunder() != 0) {
+            pirateFont.draw(game.batch, "Requires (" + player.getRequiredPlunder() + ")", 5, Gdx.graphics.getHeight() - 40);
+        }
+        pirateFont.draw(game.batch, "Objective", 0,  Gdx.graphics.getHeight() - 5, Gdx.graphics.getWidth(), Align.center, false);
+        pirateFont.draw(game.batch, "DEFEAT - " + player.getObjectiveCollege(), 0,  Gdx.graphics.getHeight() - 40, Gdx.graphics.getWidth(), Align.center, false);
+        game.batch.end();
     }
 
     @Override
@@ -126,6 +99,7 @@ public class mainGameScreen implements Screen {
         player.update();
 
         if (Gdx.input.justTouched()){
+            player.setGold(5);
             Vector3 pos = camera.unproject(new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0));
             TileType type = gamemap.getTileTypeByLocation(1, pos.x, pos.y);
 
