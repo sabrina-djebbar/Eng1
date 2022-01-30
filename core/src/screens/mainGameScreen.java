@@ -100,15 +100,10 @@ public class mainGameScreen implements Screen {
 
         if (Gdx.input.justTouched()){
             player.setGold(5);
-            Vector3 pos = camera.unproject(new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0));
-            TileType type = gamemap.getTileTypeByLocation(1, pos.x, pos.y);
+        }
 
-            if(type != null){
-                System.out.println("You clicked on tile with id " + type.getId() + " " + type.isCollidable());
-            }
-            else{
-                System.out.println("NULL");
-            }
+        if (player.collegeCombat == true){
+            game.setScreen(new combatScreen(game));
         }
 
         //This series of conditional statements will check to make sure the sprite Player is within the margin of the game

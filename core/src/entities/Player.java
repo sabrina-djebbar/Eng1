@@ -23,8 +23,8 @@ public class Player extends Entity {
     //Initialise the Tilemap for this game
     TiledGameMap gameMap = new TiledGameMap();
     //Checker for college combat
-    boolean collegeCombat;
-    String collegeToAttack;
+    public boolean collegeCombat;
+    public String collegeToAttack;
 
     //Initialise player values to be used later in development
     public String objectiveCollege;
@@ -119,8 +119,8 @@ public class Player extends Entity {
             //Still animation
         }
 
+        //Check collisions (and college battles)
         checkCollision(oldPosX, oldPosY, pos.x, pos.y);
-
 
         //Set new sprite position
         sprite.setPosition(pos.x, pos.y);
@@ -128,7 +128,7 @@ public class Player extends Entity {
 
     public void checkCollision(float oldX, float oldY, float x, float y){
 
-        for(int layer = 1; layer < 2; layer++) {
+        for(int layer = 1; layer < gameMap.getLayers(); layer++) {
             TileType tileLeft = gameMap.getTileTypeByLocation(layer, x, y);
             if(tileLeft != null) {
                 if (tileLeft.isCollidable()) {
