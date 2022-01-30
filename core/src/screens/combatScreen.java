@@ -34,8 +34,8 @@ public class combatScreen implements Screen {
         camera = new OrthographicCamera();
         camera.setToOrtho(false, game.WIDTH, game.HEIGHT);
         batch = new SpriteBatch();
-        pirateImage = new Texture(Gdx.files.internal("pirate-icon.png"));
-        cannonImage = new Texture(Gdx.files.internal("Cannon_Ball.png"));
+        pirateImage = new Texture(Gdx.files.internal("Combat/pirateBarrel.png"));
+        cannonImage = new Texture(Gdx.files.internal("Combat/cannonball.png"));
         pirate = new Rectangle();
         pirate.x = game.WIDTH / 2 - 256 / 2;
         pirate.y = 20;

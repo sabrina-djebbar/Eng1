@@ -133,7 +133,10 @@ public class Player extends Entity {
             if(tileLeft != null) {
                 if (tileLeft.isCollidable()) {
                     if (tileLeft.getName() == "Goodricke College") {
-                        if ("Goodricke College" == objectiveCollege) {
+                        if ("Goodricke College" != objectiveCollege) {
+                            pos.x = oldX;
+                            pos.y = oldY;
+                        } else {
                             if (requiredPlunder == 0) {
                                 collegeCombat = true;
                                 collegeToAttack = objectiveCollege;
@@ -143,8 +146,11 @@ public class Player extends Entity {
                             }
                         }
                     }
-                    else if (tileLeft.getName() == "Constantine College") {
-                        if ("Constantine College" == objectiveCollege) {
+                    if (tileLeft.getName() == "Constantine College") {
+                        if ("Constantine College" != objectiveCollege) {
+                            pos.x = oldX;
+                            pos.y = oldY;
+                        } else {
                             if (requiredPlunder == 0) {
                                 collegeCombat = true;
                                 collegeToAttack = objectiveCollege;
@@ -154,8 +160,11 @@ public class Player extends Entity {
                             }
                         }
                     }
-                    else if (tileLeft.getName() == "Halifax College") {
-                        if ("Halifax College" == objectiveCollege) {
+                    if (tileLeft.getName() == "Halifax College") {
+                        if ("Halifax College" != objectiveCollege) {
+                            pos.x = oldX;
+                            pos.y = oldY;
+                        } else {
                             if (requiredPlunder == 0) {
                                 collegeCombat = true;
                                 collegeToAttack = objectiveCollege;
@@ -165,8 +174,11 @@ public class Player extends Entity {
                             }
                         }
                     }
-                    else if (tileLeft.getName() == "James College") {
-                        if ("James College" == objectiveCollege) {
+                    if (tileLeft.getName() == "James College") {
+                        if ("James College" != objectiveCollege) {
+                            pos.x = oldX;
+                            pos.y = oldY;
+                        } else {
                             if (requiredPlunder == 0) {
                                 collegeCombat = true;
                                 collegeToAttack = objectiveCollege;
@@ -176,11 +188,9 @@ public class Player extends Entity {
                             }
                         }
                     }
-                    else if (tileLeft.getName() == "Small Island") {
-                        pos.x = oldX;
-                        pos.y = oldY;
-                    }
-                    else {
+                    if (tileLeft.getName() == "Small Island") {
+                        //Nothing yet
+                    } else {
                         pos.x = oldX;
                         pos.y = oldY;
                     }
@@ -191,7 +201,10 @@ public class Player extends Entity {
             if(tileRight != null) {
                 if (tileRight.isCollidable()) {
                     if (tileRight.getName() == "Goodricke College") {
-                        if ("Goodricke College" == objectiveCollege) {
+                        if ("Goodricke College" != objectiveCollege) {
+                            pos.x = oldX;
+                            pos.y = oldY;
+                        } else {
                             if (requiredPlunder == 0) {
                                 collegeCombat = true;
                                 collegeToAttack = objectiveCollege;
@@ -200,8 +213,12 @@ public class Player extends Entity {
                                 pos.y = oldY;
                             }
                         }
-                    } else if (tileRight.getName() == "Constantine College") {
-                        if ("Constantine College" == objectiveCollege) {
+                    }
+                    if (tileRight.getName() == "Constantine College") {
+                        if ("Constantine College" != objectiveCollege) {
+                            pos.x = oldX;
+                            pos.y = oldY;
+                        } else {
                             if (requiredPlunder == 0) {
                                 collegeCombat = true;
                                 collegeToAttack = objectiveCollege;
@@ -210,8 +227,12 @@ public class Player extends Entity {
                                 pos.y = oldY;
                             }
                         }
-                    } else if (tileRight.getName() == "Halifax College") {
-                        if ("Halifax College" == objectiveCollege) {
+                    }
+                    if (tileRight.getName() == "Halifax College") {
+                        if ("Halifax College" != objectiveCollege) {
+                            pos.x = oldX;
+                            pos.y = oldY;
+                        } else {
                             if (requiredPlunder == 0) {
                                 collegeCombat = true;
                                 collegeToAttack = objectiveCollege;
@@ -220,8 +241,12 @@ public class Player extends Entity {
                                 pos.y = oldY;
                             }
                         }
-                    } else if (tileRight.getName() == "James College") {
-                        if ("James College" == objectiveCollege) {
+                    }
+                    if (tileRight.getName() == "James College") {
+                        if ("James College" != objectiveCollege) {
+                            pos.x = oldX;
+                            pos.y = oldY;
+                        } else {
                             if (requiredPlunder == 0) {
                                 collegeCombat = true;
                                 collegeToAttack = objectiveCollege;
@@ -230,9 +255,9 @@ public class Player extends Entity {
                                 pos.y = oldY;
                             }
                         }
-                    } else if (tileRight.getName() == "Small Island") {
-                        pos.x = oldX;
-                        pos.y = oldY;
+                    }
+                    if (tileRight.getName() == "Small Island") {
+                        //Nothing yet
                     } else {
                         pos.x = oldX;
                         pos.y = oldY;
@@ -244,7 +269,10 @@ public class Player extends Entity {
             if(tileTop != null) {
                 if (tileTop.isCollidable()) {
                     if (tileTop.getName() == "Goodricke College") {
-                        if ("Goodricke College" == objectiveCollege) {
+                        if ("Goodricke College" != objectiveCollege) {
+                            pos.x = oldX;
+                            pos.y = oldY;
+                        } else {
                             if (requiredPlunder == 0) {
                                 collegeCombat = true;
                                 collegeToAttack = objectiveCollege;
@@ -254,8 +282,11 @@ public class Player extends Entity {
                             }
                         }
                     }
-                    else if (tileTop.getName() == "Constantine College") {
-                        if ("Constantine College" == objectiveCollege) {
+                    if (tileTop.getName() == "Constantine College") {
+                        if ("Constantine College" != objectiveCollege) {
+                            pos.x = oldX;
+                            pos.y = oldY;
+                        } else {
                             if (requiredPlunder == 0) {
                                 collegeCombat = true;
                                 collegeToAttack = objectiveCollege;
@@ -265,8 +296,11 @@ public class Player extends Entity {
                             }
                         }
                     }
-                    else if (tileTop.getName() == "Halifax College") {
-                        if ("Halifax College" == objectiveCollege) {
+                    if (tileTop.getName() == "Halifax College") {
+                        if ("Halifax College" != objectiveCollege) {
+                            pos.x = oldX;
+                            pos.y = oldY;
+                        } else {
                             if (requiredPlunder == 0) {
                                 collegeCombat = true;
                                 collegeToAttack = objectiveCollege;
@@ -276,8 +310,11 @@ public class Player extends Entity {
                             }
                         }
                     }
-                    else if (tileTop.getName() == "James College") {
-                        if ("James College" == objectiveCollege) {
+                    if (tileTop.getName() == "James College") {
+                        if ("James College" != objectiveCollege) {
+                            pos.x = oldX;
+                            pos.y = oldY;
+                        } else {
                             if (requiredPlunder == 0) {
                                 collegeCombat = true;
                                 collegeToAttack = objectiveCollege;
@@ -287,11 +324,9 @@ public class Player extends Entity {
                             }
                         }
                     }
-                    else if (tileTop.getName() == "Small Island") {
-                        pos.x = oldX;
-                        pos.y = oldY;
-                    }
-                    else {
+                    if (tileTop.getName() == "Small Island") {
+                        //Nothing yet
+                    } else {
                         pos.x = oldX;
                         pos.y = oldY;
                     }
@@ -302,7 +337,10 @@ public class Player extends Entity {
             if(tileBottom != null) {
                 if (tileBottom.isCollidable()) {
                     if (tileBottom.getName() == "Goodricke College") {
-                        if ("Goodricke College" == objectiveCollege) {
+                        if ("Goodricke College" != objectiveCollege) {
+                            pos.x = oldX;
+                            pos.y = oldY;
+                        } else {
                             if (requiredPlunder == 0) {
                                 collegeCombat = true;
                                 collegeToAttack = objectiveCollege;
@@ -311,8 +349,12 @@ public class Player extends Entity {
                                 pos.y = oldY;
                             }
                         }
-                    } else if (tileBottom.getName() == "Constantine College") {
-                        if ("Constantine College" == objectiveCollege) {
+                    }
+                    if (tileBottom.getName() == "Constantine College") {
+                        if ("Constantine College" != objectiveCollege) {
+                            pos.x = oldX;
+                            pos.y = oldY;
+                        } else {
                             if (requiredPlunder == 0) {
                                 collegeCombat = true;
                                 collegeToAttack = objectiveCollege;
@@ -321,8 +363,12 @@ public class Player extends Entity {
                                 pos.y = oldY;
                             }
                         }
-                    } else if (tileBottom.getName() == "Halifax College") {
-                        if ("Halifax College" == objectiveCollege) {
+                    }
+                    if (tileBottom.getName() == "Halifax College") {
+                        if ("Halifax College" != objectiveCollege) {
+                            pos.x = oldX;
+                            pos.y = oldY;
+                        } else {
                             if (requiredPlunder == 0) {
                                 collegeCombat = true;
                                 collegeToAttack = objectiveCollege;
@@ -331,8 +377,12 @@ public class Player extends Entity {
                                 pos.y = oldY;
                             }
                         }
-                    } else if (tileBottom.getName() == "James College") {
-                        if ("James College" == objectiveCollege) {
+                    }
+                    if (tileBottom.getName() == "James College") {
+                        if ("James College" != objectiveCollege) {
+                            pos.x = oldX;
+                            pos.y = oldY;
+                        } else {
                             if (requiredPlunder == 0) {
                                 collegeCombat = true;
                                 collegeToAttack = objectiveCollege;
@@ -341,9 +391,9 @@ public class Player extends Entity {
                                 pos.y = oldY;
                             }
                         }
-                    } else if (tileBottom.getName() == "Small Island") {
-                        pos.x = oldX;
-                        pos.y = oldY;
+                    }
+                    if (tileBottom.getName() == "Small Island") {
+                        //Nothing yet
                     } else {
                         pos.x = oldX;
                         pos.y = oldY;
