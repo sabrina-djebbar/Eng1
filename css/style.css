@@ -91,12 +91,13 @@ dropdown-content is the style for each link within a dropdown menu
 }
 
 h1{
-    font-size:2em;
+    font-size: 2em;
     text-decoration: underline;
+	text-align:center;
 }
 
 h2{
-    font-size:1em;
+    font-size: 1em;
 	text-align:center;
 }
 
