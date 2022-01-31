@@ -90,24 +90,14 @@ dropdown-content is the style for each link within a dropdown menu
     background-color: #767676;
 }
 
-/*create columns for information on index.php*/
-.col-container {
-    display: table; /* Make the container element behave like a table */
-    width: 100%; /* Set full-width to expand the whole page */
-    height:71.5vh;
-    overflow:hidden;
-}
-.col {	
-    padding:3vw;
-	display: table-cell; /* Make elements inside the container behave like table cells */
-}
 h1{
-    font-size:1em;
+    font-size:2em;
     text-decoration: underline;
 }
 
-col ul{
-    font-size:0.5em;
+h2{
+    font-size:1em;
+	text-align:center;
 }
 
 
