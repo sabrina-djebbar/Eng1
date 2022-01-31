@@ -43,20 +43,19 @@ public class mainGameScreen implements Screen {
 
     @Override
     public void show() {
-        camera = new OrthographicCamera();
-        //camera.position.set(camera.viewportWidth, camera.viewportHeight, 0);
-        camera.position.set(Gdx.graphics.getWidth()/2, Gdx.graphics.getHeight()/2, 0);
-        //camera.setToOrtho(false,Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
-        camera.setToOrtho(false,Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
-        camera.update();
-
         //Initialise the Tilemap for this game
         gamemap = new TiledGameMap();
 
+        //Initialise camera
+        camera = new OrthographicCamera();
+        camera.setToOrtho(false,Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
+        camera.position.set(gamemap.getMapWidth()/2, gamemap.getMapHeight()/2, 0);
+        camera.update();
+
         //Initialise Player & centre on the screen for rendering
         player = new Player();
-        player.setXPos(Gdx.graphics.getWidth()/2);
-        player.setYPos(Gdx.graphics.getHeight()/2);
+        player.setXPos(gamemap.getMapWidth()/2);
+        player.setYPos(gamemap.getMapHeight()/2);
 
         //Randomly select an objective at the start of each game from available colleges
         List<String> objectives = new ArrayList<>(Arrays.asList("objectiveJames", "objectiveConstantine", "objectiveHalifax", "objectiveGoodricke"));
@@ -85,6 +84,13 @@ public class mainGameScreen implements Screen {
         }
         pirateFont.draw(game.batch, "Objective", 0,  Gdx.graphics.getHeight() - 5, Gdx.graphics.getWidth(), Align.center, false);
         pirateFont.draw(game.batch, "DEFEAT - " + player.getObjectiveCollege(), 0,  Gdx.graphics.getHeight() - 40, Gdx.graphics.getWidth(), Align.center, false);
+
+        pirateFont.draw(game.batch, "Island Key", 5, 200);
+        pirateFont.draw(game.batch, "------------", 5, 190);
+        pirateFont.draw(game.batch, "Goodricke - Duck", 5, 160);
+        pirateFont.draw(game.batch, "Halifax - Tank", 5, 120);
+        pirateFont.draw(game.batch, "James - Spitfire", 5, 80);
+        pirateFont.draw(game.batch, "Constantine - LadyBug", 5, 40);
         game.batch.end();
     }
 

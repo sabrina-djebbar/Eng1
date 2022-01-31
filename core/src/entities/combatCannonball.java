@@ -4,7 +4,7 @@ import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.Gdx;
 
-public class Cannonball extends ApplicationAdapter {
+public class combatCannonball extends ApplicationAdapter {
     private Texture cannonImage;
 
     @Override
