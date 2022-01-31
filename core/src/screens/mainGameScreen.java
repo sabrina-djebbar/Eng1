@@ -8,11 +8,9 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 
 import entities.Player;
 
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.math.Vector3;
 import MapResources.GameMap;
-import MapResources.TileType;
 import MapResources.TiledGameMap;
 
 import com.badlogic.gdx.utils.Align;
@@ -31,9 +29,7 @@ public class mainGameScreen implements Screen {
 
     YorkPirates game;
 
-    public Texture healthBar;
     private BitmapFont pirateFont;
-    private Color fontColour;
 
 
     //Set current screen to game
@@ -62,14 +58,24 @@ public class mainGameScreen implements Screen {
         Random randomizer = new Random();
         String random = objectives.get(randomizer.nextInt(objectives.size()));
         //Set objectiveCollege in player
-        if(random == "objectiveJames"){player.setObjectiveCollege("James College");}
-        else if (random == "objectiveConstantine")player.setObjectiveCollege("Constantine College");
-        else if (random == "objectiveHalifax"){player.setObjectiveCollege("Halifax College");}
-        else if (random == "objectiveGoodricke"){player.setObjectiveCollege("Goodricke College");}
+        switch (random) {
+            case "objectiveJames":
+                player.setObjectiveCollege("James College");
+                break;
+            case "objectiveConstantine":
+                player.setObjectiveCollege("Constantine College");
+                break;
+            case "objectiveHalifax":
+                player.setObjectiveCollege("Halifax College");
+                break;
+            case "objectiveGoodricke":
+                player.setObjectiveCollege("Goodricke College");
+                break;
+        }
 
 
         //Create colour for labels
-        fontColour = new Color(59/255f,60/255f,54/255f, 3/2);
+        Color fontColour = new Color(59 / 255f, 60 / 255f, 54 / 255f, 3 / 2);
         pirateFont = new BitmapFont(Gdx.files.internal("UI/pirateFont.fnt"));
         pirateFont.setColor(fontColour);
     }
@@ -108,7 +114,7 @@ public class mainGameScreen implements Screen {
             player.setGold(5);
         }
 
-        if (player.collegeCombat == true){
+        if (player.collegeCombat){
             game.setScreen(new combatScreen(game));
         }
 
