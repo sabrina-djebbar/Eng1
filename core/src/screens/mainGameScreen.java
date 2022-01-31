@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 
+import entities.LostGold;
 import entities.Player;
 
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -26,6 +27,10 @@ public class mainGameScreen implements Screen {
     public static OrthographicCamera camera;
     public static GameMap gamemap;
     private Player player;
+    private LostGold lostGolds;
+    private LostGold lostGolds1;
+    private LostGold lostGolds2;
+    private LostGold lostGolds3;
 
     YorkPirates game;
 
@@ -52,6 +57,10 @@ public class mainGameScreen implements Screen {
         player = new Player();
         player.setXPos(gamemap.getMapWidth()/2);
         player.setYPos(gamemap.getMapHeight()/2);
+        lostGolds = new LostGold(player);
+        lostGolds1 = new LostGold(player);
+        lostGolds2 = new LostGold(player);
+        lostGolds3 = new LostGold(player);
 
         //Randomly select an objective at the start of each game from available colleges
         List<String> objectives = new ArrayList<>(Arrays.asList("objectiveJames", "objectiveConstantine", "objectiveHalifax", "objectiveGoodricke"));
@@ -159,6 +168,8 @@ public class mainGameScreen implements Screen {
         gamemap.render(camera);
         //Render player
         player.render(game.batch);
+
+        lostGolds.render(game.batch);
         //Finish rendering batch
         game.batch.end();
 
