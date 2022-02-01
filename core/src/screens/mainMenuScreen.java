@@ -38,12 +38,12 @@ public class mainMenuScreen  implements Screen {
     @Override
     public void show() {
         //Assign menu images to Textures for rendering
-        title = new Texture("menu/titleHeader.png");
-        playButtonActive = new Texture("menu/playActive.png");
-        playButtonInactive = new Texture("menu/play.png");
-        exitButtonActive = new Texture("menu/exitActive.png");
-        exitButtonInactive = new Texture("menu/exit.png");
-        watermarkBestCollege = new Texture("menu/Watermark.png");
+        title = new Texture("Menu/titleHeader.png");
+        playButtonActive = new Texture("Menu/playActive.png");
+        playButtonInactive = new Texture("Menu/play.png");
+        exitButtonActive = new Texture("Menu/exitActive.png");
+        exitButtonInactive = new Texture("Menu/exit.png");
+        watermarkBestCollege = new Texture("Menu/Watermark.png");
 
         camera = new OrthographicCamera();
         //camera.position.set(camera.viewportWidth, camera.viewportHeight, 0);

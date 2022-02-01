@@ -49,8 +49,8 @@ public class endGameScreen implements Screen {
         pirateFont = new BitmapFont(Gdx.files.internal("UI/pirateFont.fnt"));
         pirateFont.setColor(fontColour);
 
-        exitButtonActive = new Texture("menu/exitActive.png");
-        exitButtonInactive = new Texture("menu/exit.png");
+        exitButtonActive = new Texture("Menu/exitActive.png");
+        exitButtonInactive = new Texture("Menu/exit.png");
 
         collegeName = player.getObjectiveCollege();
 

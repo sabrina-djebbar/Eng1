@@ -53,7 +53,7 @@ public class Player extends Entity {
         gold = 0;
         score = 0;
         armourRating = 1;
-        weaponDamage = 1;
+        weaponDamage = 5;
         currentHealth = maxHealth;
         collegeCombat = false;
     }
