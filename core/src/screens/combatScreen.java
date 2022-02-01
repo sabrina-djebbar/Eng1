@@ -27,7 +27,7 @@ import java.util.Iterator;
 public class combatScreen implements Screen {
     YorkPirates game;
     private OrthographicCamera camera;
-    private SpriteBatch batch;
+    //private SpriteBatch batch;
     private Rectangle pirate;
     //List of cannonballs and gold coins
     private Array<combatCannonball> cannonballs;
@@ -37,14 +37,21 @@ public class combatScreen implements Screen {
     private long lastCoinTime;
     private long randomCoinTime;
     private long startTime = TimeUtils.millis();
+    private int timeAllowed = 10;
+    private int timeLeft = (int) (timeAllowed-((TimeUtils.millis() - startTime)/1000));
     private Texture pirateImage;
     private int pirateHealth;
     private int goldCollected;
     private BitmapFont pirateFont;
     private Color fontColour;
-
-    public combatScreen(YorkPirates game){
+    private String objectiveCollege;
+    
+    //public combatScreen(YorkPirates game){
+    //}
+    
+    public combatScreen(YorkPirates game, String objectiveCollege){
         this.game = game;
+        this.objectiveCollege = objectiveCollege;
         camera = new OrthographicCamera();
         camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         
@@ -54,7 +61,7 @@ public class combatScreen implements Screen {
         pirate.y = 20;
         pirate.width = pirateImage.getWidth();
         pirate.height = pirateImage.getHeight();
-        pirateHealth = 100;
+        pirateHealth = 10;
         goldCollected = 0;
 
         cannonballs = new Array<combatCannonball>();
@@ -146,12 +153,16 @@ public class combatScreen implements Screen {
                 goldCollected += 1;
             }
         }
+        if (pirateHealth <= 0) game.setScreen(new endGameScreen(game, false, objectiveCollege));
+        
+        timeLeft = (int) (timeAllowed-((TimeUtils.millis() - startTime)/1000));
+        if (timeLeft <= 0) game.setScreen(new endGameScreen(game, true, objectiveCollege));
     }
     
     public void drawUI(){
         pirateFont.draw(game.batch, "Gold: " + goldCollected, 5, Gdx.graphics.getHeight() - 5);
         pirateFont.draw(game.batch, "Health: " + pirateHealth, 5, Gdx.graphics.getHeight() - 40);
-        pirateFont.draw(game.batch, "Time Left: " + String.valueOf(60-((TimeUtils.millis() - startTime)/1000)), 5, Gdx.graphics.getHeight() - 75);
+        pirateFont.draw(game.batch, "Time Left: " + String.valueOf(timeLeft), 5, Gdx.graphics.getHeight() - 75);
     }
 
     @Override
@@ -177,6 +188,6 @@ public class combatScreen implements Screen {
     @Override
     public void dispose() {
         pirateImage.dispose();
-        batch.dispose();
+        //batch.dispose();
     }
 }

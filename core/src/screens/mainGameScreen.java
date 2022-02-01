@@ -124,7 +124,7 @@ public class mainGameScreen implements Screen {
         }
 
         if (player.collegeCombat){
-            game.setScreen(new combatScreen(game));
+            game.setScreen(new combatScreen(game, player.getObjectiveCollege()));
         }
 
         //This series of conditional statements will check to make sure the sprite Player is within the margin of the game
