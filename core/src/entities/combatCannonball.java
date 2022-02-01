@@ -9,14 +9,27 @@ import com.badlogic.gdx.math.Vector2;
 
 public class combatCannonball extends Entity {
 	private Rectangle rectangle = new Rectangle();
+	private String imgCannonball;
 	private Texture img;
     private Sprite sprite;
     private Vector2 pos;
     //Initialise speed - how fast the combatCannonball sprite moves
     private float SPEED = 200;
     
-    public combatCannonball(Vector2 position){
-    	img = new Texture("Combat/cannonball.png");
+    public combatCannonball(Vector2 position, String college){
+        if(college == "Goodricke College"){
+            imgCannonball = "Combat/goodrickeAttack.png";
+        }
+        else if(college == "James College"){
+            imgCannonball = "Combat/jamesAttack.png";
+        }
+        else if(college == "Halifax College"){
+            imgCannonball = "Combat/halifaxAttack.png";
+        }
+        else if(college == "Constantine College"){
+            imgCannonball = "Combat/constantineAttack.png";
+        }
+    	img = new Texture(imgCannonball);
     	rectangle.width = img.getWidth();
         rectangle.height = img.getHeight();
         sprite = new Sprite(img);

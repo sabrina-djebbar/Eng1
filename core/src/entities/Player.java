@@ -253,6 +253,10 @@ public class Player extends Entity {
         return(height);
     }
 
+    public int getWeaponDamage(){
+        return weaponDamage;
+    }
+
     public String getObjectiveCollege(){return objectiveCollege;}
 
     public int getRequiredPlunder(){return requiredPlunder;}

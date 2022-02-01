@@ -2,11 +2,8 @@ package com.yorkpiratesgame.io;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.maps.tiled.TiledMap;
-import com.badlogic.gdx.maps.tiled.TmxMapLoader;
-import com.badlogic.gdx.maps.tiled.renderers.OrthoCachedTiledMapRenderer;
 
 import screens.mainMenuScreen;
 
@@ -17,6 +14,7 @@ public class YorkPirates extends Game {
 	/** The SpriteBatch holds all that will be displayed
 	 *  Acting as storage for images, tile-maps and more. **/
 	public SpriteBatch batch;
+	public Music music;
 	/** As the primary platform for this game is desktop the default window size is as follows **/
 	public static int HEIGHT = 960;
 	public static int WIDTH = 1200;
@@ -24,6 +22,9 @@ public class YorkPirates extends Game {
 	/** Initialise batch and set the screen to main menu on startup **/
 	@Override
 	public void create () {
+		music = Gdx.audio.newMusic(Gdx.files.internal("backgroundMusic.mp3"));
+		music.setLooping(true);
+		music.play();
 		batch = new SpriteBatch();
 		this.setScreen(new mainMenuScreen(this));
 	}
@@ -31,6 +32,7 @@ public class YorkPirates extends Game {
 	/** Renders the game **/
 	@Override
 	public void render () {
+		music.play();
 		super.render();
 	}
 
