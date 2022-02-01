@@ -24,7 +24,6 @@ public class YorkPirates extends Game {
 	public void create () {
 		music = Gdx.audio.newMusic(Gdx.files.internal("backgroundMusic.mp3"));
 		music.setLooping(true);
-		music.play();
 		batch = new SpriteBatch();
 		this.setScreen(new mainMenuScreen(this));
 	}
