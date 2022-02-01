@@ -1,6 +1,7 @@
 package screens;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
@@ -132,6 +133,10 @@ public class mainGameScreen implements Screen {
         player.checkGoldCollision(lostGolds5);
 
         if (player.collegeCombat){
+            game.setScreen(new combatScreen(game, player));
+        }
+
+        if(Gdx.input.isKeyPressed(Input.Keys.L)){
             game.setScreen(new combatScreen(game, player));
         }
 

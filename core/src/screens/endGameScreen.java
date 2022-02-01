@@ -6,6 +6,10 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.maps.tiled.TiledMap;
+import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
+import com.badlogic.gdx.maps.tiled.TmxMapLoader;
+import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.yorkpiratesgame.io.YorkPirates;
 
@@ -21,21 +25,21 @@ public class endGameScreen implements Screen {
     private OrthographicCamera camera;
     private boolean survived;
     private String collegeName;
+    private String gameMap;
+    private TiledMap tiledMap;
+    private TiledMapRenderer tiledMapRenderer;
 
     private BitmapFont pirateFont;
     private Color fontColour;
 
-    private Texture collegeImg;
     private Texture exitButtonActive;
     private Texture exitButtonInactive;
 
-    public endGameScreen(YorkPirates game, boolean survived, Player player) {
+    public endGameScreen(YorkPirates game, boolean survived, Player player, String gameMap) {
         this.game = game;
         this.survived = survived;
         this.player = player;
-        collegeName = player.getObjectiveCollege();
-        camera = new OrthographicCamera();
-        camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        this.gameMap = gameMap;
     }
 
     @Override
@@ -44,9 +48,16 @@ public class endGameScreen implements Screen {
         fontColour = new Color(225/255f,225/255f,225/255f, 3/2);
         pirateFont = new BitmapFont(Gdx.files.internal("UI/pirateFont.fnt"));
         pirateFont.setColor(fontColour);
-        collegeImg = new Texture("Colleges/" + collegeName + ".png");
+
         exitButtonActive = new Texture("menu/exitActive.png");
         exitButtonInactive = new Texture("menu/exit.png");
+
+        collegeName = player.getObjectiveCollege();
+
+        camera = new OrthographicCamera();
+        camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        tiledMap = new TmxMapLoader().load(gameMap);
+        tiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap);
         
     }
 
@@ -54,14 +65,13 @@ public class endGameScreen implements Screen {
     public void render(float delta) {
     	ScreenUtils.clear(0.1f, 0.4f, 0.99f, 1);
         camera.update();
-    	game.batch.begin();
-    	if (survived) {
-    		game.batch.draw(collegeImg,
-    				Gdx.graphics.getWidth()/2 - collegeImg.getWidth()/2,
-    				Gdx.graphics.getHeight()/2 - collegeImg.getHeight()/2 + 120);
-    	}
-    	drawUI();
-    	int buttonCordX = (YorkPirates.WIDTH / 2) - (exitButtonActive.getWidth() / 2);
+
+        game.batch.begin();
+
+        tiledMapRenderer.setView(camera);
+        tiledMapRenderer.render();
+
+        int buttonCordX = (YorkPirates.WIDTH / 2) - (exitButtonActive.getWidth() / 2);
         if (Gdx.input.getX() < buttonCordX + exitButtonActive.getWidth() && Gdx.input.getX() > buttonCordX && YorkPirates.HEIGHT - Gdx.input.getY() < EXIT_BUTTON_Y + exitButtonActive.getHeight() && YorkPirates.HEIGHT - Gdx.input.getY() > EXIT_BUTTON_Y){
             game.batch.draw(exitButtonActive, buttonCordX, EXIT_BUTTON_Y, exitButtonActive.getWidth(),exitButtonActive.getHeight());
             if (Gdx.input.isTouched()){
@@ -70,6 +80,9 @@ public class endGameScreen implements Screen {
         } else {
             game.batch.draw(exitButtonInactive, buttonCordX, EXIT_BUTTON_Y, exitButtonActive.getWidth(),exitButtonActive.getHeight());
         }
+
+    	drawUI();
+
     	game.batch.end();
     }
     
@@ -79,7 +92,7 @@ public class endGameScreen implements Screen {
         pirateFont.draw(game.batch, outputString, Gdx.graphics.getWidth()/2 - outputString.length()*7.7f, Gdx.graphics.getHeight()/2 - 40);
         if (survived) {
         	 outputString = "Well done! You beat " + collegeName;
-             pirateFont.draw(game.batch, outputString, Gdx.graphics.getWidth()/2 - outputString.length()*7.7f, Gdx.graphics.getHeight()/2 + 300);
+             pirateFont.draw(game.batch, outputString, Gdx.graphics.getWidth()/2 - outputString.length()*7.7f, Gdx.graphics.getHeight()/2);
         }
         else {
         	outputString = "Bad Luck! You died";

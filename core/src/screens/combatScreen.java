@@ -5,6 +5,10 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.maps.tiled.TiledMap;
+import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
+import com.badlogic.gdx.maps.tiled.TmxMapLoader;
+import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.math.Vector2;
@@ -12,6 +16,7 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.TimeUtils;
 import com.yorkpiratesgame.io.YorkPirates;
 
+import MapResources.TiledGameMap;
 import entities.Player;
 import entities.combatCannonball;
 import entities.combatGold;
@@ -31,6 +36,10 @@ public class combatScreen implements Screen {
     private Player player;
 
     private OrthographicCamera camera;
+    private TiledMap tiledMap;
+    private TiledMapRenderer tiledMapRenderer;
+    String gameMap = "";
+
     //private SpriteBatch batch;
     private Rectangle pirate;
     //List of cannonballs and gold coins
@@ -61,6 +70,22 @@ public class combatScreen implements Screen {
         this.player = player;
         camera = new OrthographicCamera();
         camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        //Initialise the tilemap for the college being attacked
+        if (this.player.getObjectiveCollege() == "Goodricke College"){
+            gameMap = "GameMaps/combatScreenGoodricke.tmx";
+        }
+        else if (this.player.getObjectiveCollege() == "Constantine College"){
+            gameMap = "GameMaps/combatScreenConstantine.tmx";
+        }
+        else if (this.player.getObjectiveCollege() == "James College"){
+            gameMap = "GameMaps/combatScreenJames.tmx";
+        }
+        else if (this.player.getObjectiveCollege() == "Halifax College"){
+            gameMap = "GameMaps/combatScreenHalifax.tmx";
+        }
+
+        tiledMap = new TmxMapLoader().load(gameMap);
+        tiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap);
         
         pirateImage = new Texture(Gdx.files.internal("Combat/pirateBarrel.png"));
         pirate = new Rectangle();
@@ -152,13 +177,19 @@ public class combatScreen implements Screen {
                 timeLeft += 5;
             }
         }
-        if (pirateHealth <= 0) game.setScreen(new endGameScreen(game, false, player));
+        if (pirateHealth <= 0) game.setScreen(new endGameScreen(game, false, player, gameMap));
 
         timeLeft = (int) (timeAllowed-((TimeUtils.millis() - startTime)/1000));
-        if (timeLeft <= 0) game.setScreen(new endGameScreen(game, true, player));
+        if (timeLeft <= 0) game.setScreen(new endGameScreen(game, true, player, gameMap));
 
         camera.update();
         game.batch.begin();
+
+        //Render tilemap to camera
+        tiledMapRenderer.setView(camera);
+        tiledMapRenderer.render();
+
+
         game.batch.draw(pirateImage, pirate.x, pirate.y);
         //render cannonballs
         for(combatCannonball cannonball: cannonballs) {
