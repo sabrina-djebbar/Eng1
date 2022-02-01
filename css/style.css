@@ -38,6 +38,7 @@ dropdown-content is the style for each link within a dropdown menu
 */
 .topnav{
     padding-left:0.5em;
+    padding-right:0.5em;
     background-color:#ed1c24;
 }
 .dropdown {
