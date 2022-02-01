@@ -9,33 +9,31 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.yorkpiratesgame.io.YorkPirates;
 
+import entities.Player;
+
 public class endGameScreen implements Screen {
 
     YorkPirates game;
+    private Player player;
     
     private static final int EXIT_BUTTON_Y = 300;
     
     private OrthographicCamera camera;
     private boolean survived;
+    private String collegeName;
+
     private BitmapFont pirateFont;
     private Color fontColour;
+
     private Texture collegeImg;
-    private String collegeName = "Halifax";
-    
     private Texture exitButtonActive;
     private Texture exitButtonInactive;
 
-    public endGameScreen(YorkPirates game) {
-        this.game = game;
-        camera = new OrthographicCamera();
-        camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-    }
-    
-    public endGameScreen(YorkPirates game, boolean survived, String objectiveCollege) {
+    public endGameScreen(YorkPirates game, boolean survived, Player player) {
         this.game = game;
         this.survived = survived;
-        collegeName = objectiveCollege;
-        System.out.println(collegeName);
+        this.player = player;
+        collegeName = player.getObjectiveCollege();
         camera = new OrthographicCamera();
         camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
     }
@@ -77,7 +75,7 @@ public class endGameScreen implements Screen {
     
     
     public void drawUI(){
-    	String outputString = "Score: 11234";
+    	String outputString = "Score: " +  player.getGold();
         pirateFont.draw(game.batch, outputString, Gdx.graphics.getWidth()/2 - outputString.length()*7.7f, Gdx.graphics.getHeight()/2 - 40);
         if (survived) {
         	 outputString = "Well done! You beat " + collegeName;

@@ -12,6 +12,7 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.TimeUtils;
 import com.yorkpiratesgame.io.YorkPirates;
 
+import entities.Player;
 import entities.combatCannonball;
 import entities.combatGold;
 
@@ -25,7 +26,10 @@ import java.util.Iterator;
 
 
 public class combatScreen implements Screen {
+
     YorkPirates game;
+    private Player player;
+
     private OrthographicCamera camera;
     //private SpriteBatch batch;
     private Rectangle pirate;
@@ -36,22 +40,25 @@ public class combatScreen implements Screen {
     private long randomcombatCannonballTime;
     private long lastCoinTime;
     private long randomCoinTime;
+
     private long startTime = TimeUtils.millis();
-    private int timeAllowed = 10;
-    private int timeLeft = (int) (timeAllowed-((TimeUtils.millis() - startTime)/1000));
+    private int timeAllowed;
+    private int timeLeft;
+
     private Texture pirateImage;
     private int pirateHealth;
     private int goldCollected;
+
     private BitmapFont pirateFont;
     private Color fontColour;
-    private String objectiveCollege;
+
     
     //public combatScreen(YorkPirates game){
     //}
     
-    public combatScreen(YorkPirates game, String objectiveCollege){
+    public combatScreen(YorkPirates game, Player player){
         this.game = game;
-        this.objectiveCollege = objectiveCollege;
+        this.player = player;
         camera = new OrthographicCamera();
         camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         
@@ -61,8 +68,11 @@ public class combatScreen implements Screen {
         pirate.y = 20;
         pirate.width = pirateImage.getWidth();
         pirate.height = pirateImage.getHeight();
-        pirateHealth = 10;
+        pirateHealth = 100;
         goldCollected = 0;
+
+        timeAllowed = 100;
+        timeLeft = (int) (timeAllowed-((TimeUtils.millis() - startTime)/1000));
 
         cannonballs = new Array<combatCannonball>();
         spawncombatCannonball();
@@ -103,20 +113,7 @@ public class combatScreen implements Screen {
     @Override
     public void render(float delta) {
         ScreenUtils.clear(0, 0, 0.2f, 1);
-        camera.update();
-        game.batch.begin();
-        game.batch.draw(pirateImage, pirate.x, pirate.y);
-        //render cannonballs
-        for(combatCannonball cannonball: cannonballs) {
-        	cannonball.render(game.batch);
-        }
-        //render coins
-        for(combatGold coin: coins) {
-        	coin.render(game.batch);
-        }
-        drawUI();
-        game.batch.end();
-        
+
         if(Gdx.input.isTouched()) {
             Vector3 touchPos = new Vector3();
             touchPos.set(Gdx.input.getX(), Gdx.input.getY(), 0);
@@ -124,8 +121,8 @@ public class combatScreen implements Screen {
             pirate.x = touchPos.x - 64 / 2;
         }
 
-        if(Gdx.input.isKeyPressed(Keys.LEFT)) pirate.x -= 200 * Gdx.graphics.getDeltaTime();
-        if(Gdx.input.isKeyPressed(Keys.RIGHT)) pirate.x += 200 * Gdx.graphics.getDeltaTime();
+        if(Gdx.input.isKeyPressed(Keys.LEFT) | Gdx.input.isKeyPressed(Keys.A)) pirate.x -= 200 * Gdx.graphics.getDeltaTime();
+        if(Gdx.input.isKeyPressed(Keys.RIGHT)| Gdx.input.isKeyPressed(Keys.D)) pirate.x += 200 * Gdx.graphics.getDeltaTime();
 
         if(pirate.x < 0) pirate.x = 0;
         if(pirate.x > Gdx.graphics.getWidth() - pirate.getWidth()) pirate.x = Gdx.graphics.getWidth() - pirate.getWidth();
@@ -143,7 +140,7 @@ public class combatScreen implements Screen {
                 pirateHealth -= 5;
             }
         }
-        
+
         for (Iterator<combatGold> iter = coins.iterator(); iter.hasNext(); ) {
             combatGold coin = iter.next();
             coin.update();
@@ -151,18 +148,37 @@ public class combatScreen implements Screen {
             if(coin.getRectangle().overlaps(pirate)) {
                 iter.remove();
                 goldCollected += 1;
+                player.setGold(1);
+                timeLeft += 5;
             }
         }
-        if (pirateHealth <= 0) game.setScreen(new endGameScreen(game, false, objectiveCollege));
-        
+        if (pirateHealth <= 0) game.setScreen(new endGameScreen(game, false, player));
+
         timeLeft = (int) (timeAllowed-((TimeUtils.millis() - startTime)/1000));
-        if (timeLeft <= 0) game.setScreen(new endGameScreen(game, true, objectiveCollege));
+        if (timeLeft <= 0) game.setScreen(new endGameScreen(game, true, player));
+
+        camera.update();
+        game.batch.begin();
+        game.batch.draw(pirateImage, pirate.x, pirate.y);
+        //render cannonballs
+        for(combatCannonball cannonball: cannonballs) {
+        	cannonball.render(game.batch);
+        }
+        //render coins
+        for(combatGold coin: coins) {
+        	coin.render(game.batch);
+        }
+        game.batch.end();
+
+        drawUI();
     }
     
     public void drawUI(){
+        game.batch.begin();
         pirateFont.draw(game.batch, "Gold: " + goldCollected, 5, Gdx.graphics.getHeight() - 5);
         pirateFont.draw(game.batch, "Health: " + pirateHealth, 5, Gdx.graphics.getHeight() - 40);
         pirateFont.draw(game.batch, "Time Left: " + String.valueOf(timeLeft), 5, Gdx.graphics.getHeight() - 75);
+        game.batch.end();
     }
 
     @Override

@@ -7,7 +7,12 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
+import com.badlogic.gdx.math.Intersector;
+import com.badlogic.gdx.math.Polygon;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
+
+import org.w3c.dom.css.Rect;
 
 import MapResources.GameMap;
 import MapResources.TileType;
@@ -17,6 +22,7 @@ public class Player extends Entity {
 
     private Texture img;
     private Sprite sprite;
+    private Polygon polygon;
     private Vector2 pos;
     //Initialise speed - how fast the player sprite can move
     private float SPEED = 90;
@@ -39,6 +45,11 @@ public class Player extends Entity {
         pos = new Vector2(0,0);
         width = img.getWidth();
         height = img.getHeight();
+        polygon = new Polygon(new float[]{ //so we pass a new float array to the constructor
+                0,0, //this is the x,y of the first vertex
+                50,0, //the second vertex
+                50,50, //the third
+                0,50}); //and the last
         gold = 0;
         score = 0;
         armourRating = 1;
@@ -78,42 +89,50 @@ public class Player extends Entity {
         if(up){
             pos.y += SPEED * Gdx.graphics.getDeltaTime();
             sprite.setRotation(0);
+            polygon.setRotation(0);
         }
         //move Down
         if(down){
             pos.y -= SPEED * Gdx.graphics.getDeltaTime();
             sprite.setRotation(180);
+            polygon.setRotation(180);
         }
         //move Left
         if(left){
             pos.x -= SPEED * Gdx.graphics.getDeltaTime();
             sprite.setRotation(90);
+            polygon.setRotation(90);
         }
         //move Right
         if(right){
             pos.x += SPEED * Gdx.graphics.getDeltaTime();
             sprite.setRotation(270);
+            polygon.setRotation(270);
         }
         //taking away movement to make it same speed
         if (up && right) {
             pos.x -= SPEED * (1-sin45) * Gdx.graphics.getDeltaTime();
             pos.y -= SPEED * (1-sin45) * Gdx.graphics.getDeltaTime();
             sprite.setRotation(315);
+            polygon.setRotation(315);
         }
         if (up && left) {
             pos.y -= SPEED * (1-sin45) * Gdx.graphics.getDeltaTime();
             pos.x += SPEED * (1-sin45) * Gdx.graphics.getDeltaTime();
             sprite.setRotation(45);
+            polygon.setRotation(45);
         }
         if (down && right) {
             pos.x -= SPEED * (1-sin45) * Gdx.graphics.getDeltaTime();
             pos.y += SPEED * (1-sin45) * Gdx.graphics.getDeltaTime();
             sprite.setRotation(225);
+            polygon.setRotation(225);
         }
         if (down && left) {
             pos.x += SPEED * (1-sin45) * Gdx.graphics.getDeltaTime();
             pos.y += SPEED * (1-sin45) * Gdx.graphics.getDeltaTime();
             sprite.setRotation(135);
+            polygon.setRotation(135);
         }
         if(!down && !left && !right && !up){
             //Still animation
@@ -124,6 +143,7 @@ public class Player extends Entity {
 
         //Set new sprite position
         sprite.setPosition(pos.x, pos.y);
+        polygon.setPosition(pos.x, pos.y);
     }
 
     public void checkCollision(float oldX, float oldY, float x, float y){
@@ -202,14 +222,10 @@ public class Player extends Entity {
         }
     }
 
-    public void checkGoldCollision(LostGold gold, float x, float y){
-        for (int row = (int) (y / TileType.TILE_SIZE); row < Math.ceil((y + getHeight()) / TileType.TILE_SIZE); row++) {
-            for (int col = (int) (x / TileType.TILE_SIZE); col < Math.ceil((x + getWidth()) / TileType.TILE_SIZE); col++) {
-                if (col == gold.getPosX() | row == gold.getPosY()){
-                    setGold(5);
-                    gold.spawnGold();
-                }
-            }
+    public void checkGoldCollision(LostGold gold){
+        if(Intersector.overlapConvexPolygons(gold.polygon, this.polygon)) {
+            setGold(5);
+            gold.spawnGold();
         }
     }
 
@@ -251,25 +267,27 @@ public class Player extends Entity {
 
     public void setXPos(float x){
         pos.x = x;
+        polygon.setPosition(x, getYPos());
     }
 
     public void setYPos(float y){
         pos.y = y;
+        polygon.setPosition(getXPos(), y);
     }
 
     public void setObjectiveCollege(String objectiveCollege){
         this.objectiveCollege = objectiveCollege;
         if(this.objectiveCollege == "Goodricke College"){
-            requiredPlunder = 25;
+            requiredPlunder = 50;
         }
         else if(this.objectiveCollege == "Constantine College"){
             requiredPlunder = 50;
         }
         else if(this.objectiveCollege == "Halifax College"){
-            requiredPlunder = 75;
+            requiredPlunder = 50;
         }
         else if(this.objectiveCollege == "James College"){
-            requiredPlunder = 100;
+            requiredPlunder = 50;
         }
     }
 

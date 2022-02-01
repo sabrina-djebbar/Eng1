@@ -4,6 +4,8 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Polygon;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 
 import java.util.Random;
@@ -16,6 +18,7 @@ public class LostGold extends Entity{
 
     private Texture img;
     private Player player;
+    public Polygon polygon;
     private Sprite goldIsland;
     private Vector2 pos;
     private int goldIslandWidth = 64;
@@ -31,6 +34,11 @@ public class LostGold extends Entity{
 
         pos = new Vector2(0,0);
         img = new Texture("GameMaps/goldIsland.png");
+        polygon = new Polygon(new float[]{ //so we pass a new float array to the constructor
+                0,0, //this is the x,y of the first vertex
+                50,0, //the second vertex
+                50,50, //the third
+                0,50}); //and the last
         goldIsland = new Sprite(img);
         spawnGold();
     }
@@ -59,7 +67,7 @@ public class LostGold extends Entity{
 
 
         goldIsland.setPosition(pos.x, pos.y);
-        System.out.println(pos.x + " " + pos.y);
+        polygon.setPosition(pos.x, pos.y);
     }
 
     public float getPosX(){

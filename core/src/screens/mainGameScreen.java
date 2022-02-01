@@ -31,6 +31,8 @@ public class mainGameScreen implements Screen {
     private LostGold lostGolds1;
     private LostGold lostGolds2;
     private LostGold lostGolds3;
+    private LostGold lostGolds4;
+    private LostGold lostGolds5;
 
     YorkPirates game;
 
@@ -61,6 +63,8 @@ public class mainGameScreen implements Screen {
         lostGolds1 = new LostGold(player);
         lostGolds2 = new LostGold(player);
         lostGolds3 = new LostGold(player);
+        lostGolds4 = new LostGold(player);
+        lostGolds5 = new LostGold(player);
 
         //Randomly select an objective at the start of each game from available colleges
         List<String> objectives = new ArrayList<>(Arrays.asList("objectiveJames", "objectiveConstantine", "objectiveHalifax", "objectiveGoodricke"));
@@ -120,13 +124,15 @@ public class mainGameScreen implements Screen {
         player.update();
 
         //Check if player has hit a gold island
-        player.checkGoldCollision(lostGolds, player.getXPos(), player.getYPos());
-        player.checkGoldCollision(lostGolds1, player.getXPos(), player.getYPos());
-        player.checkGoldCollision(lostGolds2, player.getXPos(), player.getYPos());
-        player.checkGoldCollision(lostGolds3, player.getXPos(), player.getYPos());
+        player.checkGoldCollision(lostGolds);
+        player.checkGoldCollision(lostGolds1);
+        player.checkGoldCollision(lostGolds2);
+        player.checkGoldCollision(lostGolds3);
+        player.checkGoldCollision(lostGolds4);
+        player.checkGoldCollision(lostGolds5);
 
         if (player.collegeCombat){
-            game.setScreen(new combatScreen(game, player.getObjectiveCollege()));
+            game.setScreen(new combatScreen(game, player));
         }
 
         //This series of conditional statements will check to make sure the sprite Player is within the margin of the game
