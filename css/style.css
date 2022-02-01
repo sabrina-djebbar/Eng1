@@ -21,14 +21,7 @@ html,body{
 
 }
 
-.title{
-    color:black;
-    font-size: 10vh;  
-    text-align :center;
-    padding:1em;
-    display:inline;
-    vertical-align: top;
-}
+
 /* 
 topnav styles the horizontal navigation bar
 dropdown is the styling for each individual dropdown menu
