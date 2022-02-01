@@ -119,9 +119,11 @@ public class mainGameScreen implements Screen {
         //Check for player movement and update positions
         player.update();
 
-        if (Gdx.input.justTouched()){
-            player.setGold(5);
-        }
+        //Check if player has hit a gold island
+        player.checkGoldCollision(lostGolds, player.getXPos(), player.getYPos());
+        player.checkGoldCollision(lostGolds1, player.getXPos(), player.getYPos());
+        player.checkGoldCollision(lostGolds2, player.getXPos(), player.getYPos());
+        player.checkGoldCollision(lostGolds3, player.getXPos(), player.getYPos());
 
         if (player.collegeCombat){
             game.setScreen(new combatScreen(game));
@@ -170,6 +172,9 @@ public class mainGameScreen implements Screen {
         player.render(game.batch);
 
         lostGolds.render(game.batch);
+        lostGolds1.render(game.batch);
+        lostGolds2.render(game.batch);
+        lostGolds3.render(game.batch);
         //Finish rendering batch
         game.batch.end();
 
